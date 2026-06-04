@@ -387,17 +387,73 @@
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
     /* ── RESPONSIVE ── */
+
+    /* Prevent any horizontal overflow globally */
+    html, body {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
     @media (max-width: 768px) {
-      .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0;
-        background: var(--bg2); padding: 1rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+      /* Nav */
+      .nav-links {
+        display: none; flex-direction: column;
+        position: absolute; top: 64px; left: 0; right: 0;
+        background: var(--bg2); padding: 1rem 2rem 2rem;
+        border-bottom: 1px solid var(--border);
+      }
       .nav-links.open { display: flex; }
       .nav-toggle { display: flex; }
-      .contact-grid { grid-template-columns: 1fr; }
+
+      /* Sections */
       section { padding: 4rem 1.25rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+
+      /* Hero */
+      #hero { padding: 100px 1.25rem 3rem; }
+      .hero-content { width: 100%; }
+      .hero-badge { font-size: .72rem; padding: .3rem .85rem; }
+
+      h1 { font-size: 2.4rem; }
+
+      .hero-role { font-size: .95rem; }
+
+      .hero-summary { font-size: .875rem; padding: 0 .25rem; }
+
+      .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: .75rem;
+        padding: 0 .5rem;
+      }
+      .btn { justify-content: center; width: 100%; }
+
+      /* Hero links — stack vertically */
+      .hero-links {
+        flex-direction: column;
+        align-items: center;
+        gap: .6rem;
+        font-size: .78rem;
+      }
+      .hero-links a { justify-content: center; }
     }
 
     @media (max-width: 480px) {
       .projects-grid, .skills-grid, .certs-grid { grid-template-columns: 1fr; }
+
+      h2 { font-size: 1.7rem; }
+
+      /* Project & cert cards */
+      .project-card, .cert-card, .skill-card { padding: 1.25rem; }
+
+      /* Education card */
+      .edu-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+
+      /* Contact links */
+      .contact-link { font-size: .82rem; }
+
+      /* Footer */
+      footer { font-size: .75rem; line-height: 1.8; }
     }
 
     /* ── SCROLL PROGRESS ── */
