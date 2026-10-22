@@ -211,6 +211,62 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .lb img{max-width:min(1100px,100%);max-height:86vh;border-radius:12px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .lb button{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;font-size:22px;cursor:pointer}
 
+/* lecture decks */
+.slides.decks{grid-auto-columns:236px;align-items:start}
+.slides .deck{aspect-ratio:auto;display:flex;flex-direction:column;text-align:left;cursor:pointer;font:inherit;color:var(--text);transition:border-color .15s,box-shadow .15s}
+.slides .deck:hover{border-color:var(--accent);box-shadow:var(--shadow)}
+.slides .deck img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--border)}
+.deck .cap{display:flex;flex-direction:column;gap:2px;padding:9px 11px 10px}
+.deck .cap b{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.deck .cap span{font-size:13.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.deck .cap em{font-style:normal;font-size:12px;color:var(--muted)}
+.course.split .slides.decks{grid-auto-columns:auto}
+ol.sessions li button{all:unset;display:flex;gap:10px;align-items:baseline;width:100%;cursor:pointer;border-radius:6px}
+ol.sessions li button:hover span{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+ol.sessions li button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ol.sessions li button b{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600;min-width:22px}
+ol.sessions li button span{flex:1}
+ol.sessions li button em{font-style:normal;font-size:12px;color:var(--muted);white-space:nowrap}
+ol.sessions li.nodeck span{color:var(--muted)}
+
+/* deck viewer */
+.dv{position:fixed;inset:0;z-index:120;background:#070b14;display:none;flex-direction:column;color:#fff}
+.dv.open{display:flex}
+.dv-top{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.dv-title{flex:1;min-width:0}
+.dv-title small{display:block;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#93b4ff}
+.dv-title b{display:block;font-size:15.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dv-count{font-size:13.5px;color:#c7cfdd;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dv button{font:inherit;color:#fff;cursor:pointer}
+.dv-x{flex:none;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.1);font-size:24px!important;line-height:1}
+.dv-x:hover{background:rgba(255,255,255,.2)}
+.dv-stage{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:14px 76px}
+.dv-stage img{max-width:100%;max-height:100%;width:auto;height:auto;border-radius:10px;background:#fff;box-shadow:0 24px 70px rgba(0,0,0,.55);user-select:none;-webkit-user-drag:none}
+.dv-nav{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;border:0;background:rgba(255,255,255,.12);font-size:26px!important;display:grid;place-items:center}
+.dv-nav:hover{background:rgba(255,255,255,.24)}
+.dv-nav:disabled{opacity:.25;cursor:default}
+.dv-prev{left:14px}.dv-next{right:14px}
+.dv-thumbs{display:flex;gap:8px;overflow-x:auto;padding:10px 18px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.25) transparent}
+.dv-thumbs button{flex:none;width:116px;aspect-ratio:16/9;padding:0;border-radius:6px;overflow:hidden;border:2px solid transparent;background:#1b2333;opacity:.55;transition:opacity .15s}
+.dv-thumbs button:hover{opacity:.85}
+.dv-thumbs button.on{border-color:#60a5fa;opacity:1}
+.dv-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.dv-foot{display:flex;justify-content:space-between;gap:10px;padding:4px 18px 16px}
+.dv-foot button{background:none;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 14px;font-size:13.5px!important;max-width:48%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dv-foot button:hover{border-color:rgba(255,255,255,.5)}
+.dv-foot button:disabled{visibility:hidden}
+@media (max-width:640px){
+  .dv-top{padding:10px 12px;gap:10px}
+  .dv-stage{padding:8px 6px}
+  .dv-nav{width:38px;height:38px;font-size:20px!important;background:rgba(7,11,20,.55)}
+  .dv-prev{left:10px}.dv-next{right:10px}
+  .dv-thumbs{padding:8px 12px}
+  .dv-thumbs button{width:84px}
+  .dv-foot{padding:2px 12px calc(12px + env(safe-area-inset-bottom))}
+  .dv-foot button{font-size:12.5px!important;padding:7px 11px}
+  .slides.decks{grid-auto-columns:72%}
+}
+
 /* reveal */
 .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
 .reveal.in{opacity:1;transform:none}
@@ -310,6 +366,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .stat span{font-size:11px;line-height:1.3;display:block}
   .edu{grid-template-columns:1fr;padding:24px}
   .slides{grid-auto-columns:78%}
+  .slides.decks{grid-auto-columns:72%}
   .contact{border-radius:20px;padding:32px 20px}
   .more-head{flex-direction:column;align-items:flex-start;gap:6px}
 }
@@ -416,50 +473,72 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <div class="sec-head reveal">
       <span class="eyebrow">Teaching portfolio</span>
       <h2>Courses I designed and taught</h2>
-      <p class="lead">Full curricula for adults, teens and kids, each built around hands-on labs and projects. Click any slide to see it larger.</p>
+      <p class="lead">Full curricula for adults, teens and kids, each built around hands-on labs and projects. Open any lecture to flip through all of its slides.</p>
     </div>
 
     <div class="courses">
 
       <article class="course wide reveal">
-        <div class="slides">
-          <button data-full="assets/teaching/diploma-p2.webp" aria-label="Enlarge slide: Level 1, AI Fundamentals"><img src="assets/teaching/diploma-p2.webp" alt="AI & Automation Diploma, Level 1 topics" loading="lazy"></button>
-          <button data-full="assets/teaching/diploma-p4.webp" aria-label="Enlarge slide: Level 3, AI for Business"><img src="assets/teaching/diploma-p4.webp" alt="AI & Automation Diploma, Level 3 topics" loading="lazy"></button>
-          <button data-full="assets/teaching/claude-p1.webp" aria-label="Enlarge slide: Claude lecture cover"><img src="assets/teaching/claude-p1.webp" alt="Lecture cover: from Claude texts to visual production" loading="lazy"></button>
-          <button data-full="assets/teaching/claude-p3.webp" aria-label="Enlarge slide: Claude features"><img src="assets/teaching/claude-p3.webp" alt="Lecture slide on Claude features" loading="lazy"></button>
-          <button data-full="assets/teaching/identity-p3.webp" aria-label="Enlarge slide: AI for brand identity"><img src="assets/teaching/identity-p3.webp" alt="Lecture slide on AI for brand identity" loading="lazy"></button>
+        <div class="slides decks">
+          <button type="button" class="deck" data-deck="ai-00" aria-label="Open Course outline: 5 levels, 36 hours over 3 months, 6 slides"><img src="assets/decks/ai-00/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Course outline</b><span>5 levels, 36 hours over 3 months</span><em>6 slides</em></span></button>
+          <button type="button" class="deck" data-deck="ai-01" aria-label="Open Lecture 1: AI Fundamentals: AI, ML &amp; deep learning, real-world applications, data privacy, 30 slides"><img src="assets/decks/ai-01/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 1</b><span>AI Fundamentals</span><em>30 slides</em></span></button>
+          <button type="button" class="deck" data-deck="ai-02" aria-label="Open Lecture 2: Generative AI &amp; Ethics, 30 slides"><img src="assets/decks/ai-02/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 2</b><span>Generative AI &amp; Ethics</span><em>30 slides</em></span></button>
+          <button type="button" class="deck" data-deck="ai-03" aria-label="Open Lecture 3: Gemini &amp; NotebookLM for research and study, 15 slides"><img src="assets/decks/ai-03/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 3</b><span>Gemini &amp; NotebookLM</span><em>15 slides</em></span></button>
+          <button type="button" class="deck" data-deck="ai-04" aria-label="Open Lecture 4: Claude and visual production tools: Artifacts, DALL·E, Sora, Luma, Suno (Arabic), 15 slides"><img src="assets/decks/ai-04/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 4</b><span>Claude &amp; visual production tools (Arabic)</span><em>15 slides</em></span></button>
+          <button type="button" class="deck" data-deck="ai-05" aria-label="Open Lecture 5: AI for brand identity and video: script, characters, scenes, voice-over, editing (Arabic), 22 slides"><img src="assets/decks/ai-05/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 5</b><span>AI for brand identity &amp; video (Arabic)</span><em>22 slides</em></span></button>
         </div>
         <div class="course-body">
-          <div class="course-meta"><span>Zoomix</span><span>Adults: university professors &amp; business owners</span><span>5 levels · 36 hours</span></div>
+          <div class="course-meta"><span>Zoomix</span><span>Adults: university professors &amp; business owners</span><span>5 levels · 36 hours · 3 months</span></div>
           <h3>AI &amp; Automation Diploma</h3>
           <p>From first prompts to automated business workflows. Learners use AI in their daily work, then connect tools into automations and AI agents with no-code platforms.</p>
           <div class="levels">
-            <div class="level"><small>Level 1</small><b>AI Fundamentals</b><p>Types of AI, generative AI, prompt engineering basics, ethics, popular AI tools</p></div>
-            <div class="level"><small>Level 2</small><b>AI Productivity</b><p>Writing, presentations, research, email, translation, data analysis</p></div>
-            <div class="level"><small>Level 3</small><b>AI for Business</b><p>Marketing, customer service, chatbots, image, video and voice generation</p></div>
-            <div class="level"><small>Level 4</small><b>Automation Tools</b><p>Workflow and no-code automation, AI agents, connecting apps, forms and notifications</p></div>
-            <div class="level"><small>Level 5</small><b>Advanced AI</b><p>AI assistants for sales, HR, finance, education and project management</p></div>
+            <div class="level"><small>Level 1</small><b>AI Fundamentals</b><p>What AI is, types of AI, AI in everyday life, generative AI, prompt engineering basics, ethics, popular AI tools</p></div>
+            <div class="level"><small>Level 2</small><b>AI Productivity</b><p>Writing and content, presentations, research, email, translation, data analysis, office work, time management</p></div>
+            <div class="level"><small>Level 3</small><b>AI for Business</b><p>Marketing, customer service, chatbots, social media, image, video and voice generation, business automation basics</p></div>
+            <div class="level"><small>Level 4</small><b>Automation Tools</b><p>Workflow and no-code automation, AI agent basics, connecting apps, forms and notifications, AI scheduling, business processes</p></div>
+            <div class="level"><small>Level 5</small><b>Advanced AI</b><p>AI assistants for sales, HR, finance, education and project management, AI decision making, workflow optimization</p></div>
           </div>
           <details>
-            <summary>Sample lectures</summary>
+            <summary>All lectures</summary>
             <ol class="sessions">
-              <li><b>01</b>AI Fundamentals: AI, ML &amp; deep learning, real-world applications, data privacy</li>
-              <li><b>02</b>Generative AI &amp; Ethics</li>
-              <li><b>03</b>Gemini &amp; NotebookLM for research and study</li>
-              <li><b>04</b>Claude and visual production tools: Artifacts, DALL·E, Sora, Luma, Suno (Arabic)</li>
-              <li><b>05</b>AI for brand identity and video: script, characters, scenes, voice-over, editing (Arabic)</li>
-              <li><b>06</b>Video automation systems with AI</li>
+              <li><button type="button" data-deck="ai-00"><b>00</b><span>Course outline: the 5 levels and their topics</span><em>6 slides</em></button></li>
+              <li><button type="button" data-deck="ai-01"><b>01</b><span>AI Fundamentals: AI, ML &amp; deep learning, real-world applications, data privacy</span><em>30 slides</em></button></li>
+              <li><button type="button" data-deck="ai-02"><b>02</b><span>Generative AI &amp; Ethics</span><em>30 slides</em></button></li>
+              <li><button type="button" data-deck="ai-03"><b>03</b><span>Gemini &amp; NotebookLM for research and study</span><em>15 slides</em></button></li>
+              <li><button type="button" data-deck="ai-04"><b>04</b><span>Claude and visual production tools: Artifacts, DALL·E, Sora, Luma, Suno (Arabic)</span><em>15 slides</em></button></li>
+              <li><button type="button" data-deck="ai-05"><b>05</b><span>AI for brand identity and video: script, characters, scenes, voice-over, editing (Arabic)</span><em>22 slides</em></button></li>
+              <li class="nodeck"><b>06</b><span>Video automation systems with AI</span></li>
             </ol>
           </details>
         </div>
       </article>
 
       <article class="course wide reveal">
-        <div class="slides">
-          <button data-full="assets/teaching/web01-p1.webp" aria-label="Enlarge slide: Session 1"><img src="assets/teaching/web01-p1.webp" alt="Session 1: Introduction to Web Development" loading="lazy"></button>
-          <button data-full="assets/teaching/web11-p1.webp" aria-label="Enlarge slide: Session 11"><img src="assets/teaching/web11-p1.webp" alt="Session 11: APIs and Asynchronous JavaScript" loading="lazy"></button>
-          <button data-full="assets/teaching/web15-p3.webp" aria-label="Enlarge slide: Session 15"><img src="assets/teaching/web15-p3.webp" alt="Session 15: REST APIs and CRUD, real-world hook" loading="lazy"></button>
-          <button data-full="assets/teaching/web19-p4.webp" aria-label="Enlarge slide: Session 19"><img src="assets/teaching/web19-p4.webp" alt="Session 19: hashing is not encryption" loading="lazy"></button>
+        <div class="slides decks">
+          <button type="button" class="deck" data-deck="web-01" aria-label="Open Session 1: Introduction to Web Development, 15 slides"><img src="assets/decks/web-01/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 1</b><span>Introduction to Web Development</span><em>15 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-02" aria-label="Open Session 2: HTML Fundamentals, 15 slides"><img src="assets/decks/web-02/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 2</b><span>HTML Fundamentals</span><em>15 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-03" aria-label="Open Session 3: Forms and Semantic HTML, 16 slides"><img src="assets/decks/web-03/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 3</b><span>Forms and Semantic HTML</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-04" aria-label="Open Session 4: CSS Fundamentals, 16 slides"><img src="assets/decks/web-04/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 4</b><span>CSS Fundamentals</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-05" aria-label="Open Session 5: CSS Layout and Flexbox, 16 slides"><img src="assets/decks/web-05/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 5</b><span>CSS Layout and Flexbox</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-06" aria-label="Open Session 6: CSS Grid and Responsive Design, 16 slides"><img src="assets/decks/web-06/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 6</b><span>CSS Grid and Responsive Design</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-07" aria-label="Open Session 7: Modern UI with CSS, 16 slides"><img src="assets/decks/web-07/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 7</b><span>Modern UI with CSS</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-08" aria-label="Open Session 8: JavaScript Fundamentals, 16 slides"><img src="assets/decks/web-08/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 8</b><span>JavaScript Fundamentals</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-09" aria-label="Open Session 9: Functions and Arrays, 16 slides"><img src="assets/decks/web-09/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 9</b><span>Functions and Arrays</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-10" aria-label="Open Session 10: DOM and Events, 16 slides"><img src="assets/decks/web-10/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 10</b><span>DOM and Events</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-11" aria-label="Open Session 11: APIs and Async JavaScript, 16 slides"><img src="assets/decks/web-11/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 11</b><span>APIs and Async JavaScript</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-12" aria-label="Open Session 12: Frontend Final Project, 15 slides"><img src="assets/decks/web-12/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 12</b><span>Frontend Final Project</span><em>15 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-13" aria-label="Open Session 13: Backend Fundamentals and Node.js, 16 slides"><img src="assets/decks/web-13/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 13</b><span>Backend Fundamentals and Node.js</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-14" aria-label="Open Session 14: Express.js, 16 slides"><img src="assets/decks/web-14/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 14</b><span>Express.js</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-15" aria-label="Open Session 15: REST APIs and CRUD, 16 slides"><img src="assets/decks/web-15/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 15</b><span>REST APIs and CRUD</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-16" aria-label="Open Session 16: Databases and MongoDB, 16 slides"><img src="assets/decks/web-16/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 16</b><span>Databases and MongoDB</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-17" aria-label="Open Session 17: MongoDB with Mongoose, 16 slides"><img src="assets/decks/web-17/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 17</b><span>MongoDB with Mongoose</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-18" aria-label="Open Session 18: Professional Backend Architecture, 16 slides"><img src="assets/decks/web-18/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 18</b><span>Professional Backend Architecture</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-19" aria-label="Open Session 19: Authentication, 16 slides"><img src="assets/decks/web-19/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 19</b><span>Authentication</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-20" aria-label="Open Session 20: Authorization and Security, 17 slides"><img src="assets/decks/web-20/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 20</b><span>Authorization and Security</span><em>17 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-21" aria-label="Open Session 21: Connecting Frontend and Backend, 16 slides"><img src="assets/decks/web-21/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 21</b><span>Connecting Frontend and Backend</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-22" aria-label="Open Session 22: Advanced API Features, 16 slides"><img src="assets/decks/web-22/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 22</b><span>Advanced API Features</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-23" aria-label="Open Session 23: Testing, Debugging and Deployment, 15 slides"><img src="assets/decks/web-23/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 23</b><span>Testing, Debugging and Deployment</span><em>15 slides</em></span></button>
+          <button type="button" class="deck" data-deck="web-24" aria-label="Open Session 24: Final Project and Demo Day, 14 slides"><img src="assets/decks/web-24/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 24</b><span>Final Project and Demo Day</span><em>14 slides</em></span></button>
         </div>
         <div class="course-body">
           <div class="course-meta"><span>Zoomix</span><span>Beginners to junior developers</span><span>24 sessions · 24 projects</span></div>
@@ -468,18 +547,37 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
           <div class="tags"><span class="tag">HTML &amp; CSS</span><span class="tag">Flexbox &amp; Grid</span><span class="tag">JavaScript</span><span class="tag">DOM &amp; APIs</span><span class="tag">Node.js &amp; Express</span><span class="tag">MongoDB &amp; Mongoose</span><span class="tag">Auth &amp; security</span><span class="tag">Testing &amp; deployment</span></div>
           <details>
             <summary>All 24 sessions</summary>
-            <ol class="sessions">
-              <li><b>01</b>Introduction to Web Development</li><li><b>02</b>HTML Fundamentals</li><li><b>03</b>Forms and Semantic HTML</li><li><b>04</b>CSS Fundamentals</li><li><b>05</b>CSS Layout and Flexbox</li><li><b>06</b>CSS Grid and Responsive Design</li><li><b>07</b>Modern UI with CSS</li><li><b>08</b>JavaScript Fundamentals</li><li><b>09</b>Functions and Arrays</li><li><b>10</b>DOM and Events</li><li><b>11</b>APIs and Async JavaScript</li><li><b>12</b>Frontend Final Project</li><li><b>13</b>Backend Fundamentals and Node.js</li><li><b>14</b>Express.js</li><li><b>15</b>REST APIs and CRUD</li><li><b>16</b>Databases and MongoDB</li><li><b>17</b>MongoDB with Mongoose</li><li><b>18</b>Professional Backend Architecture</li><li><b>19</b>Authentication</li><li><b>20</b>Authorization and Security</li><li><b>21</b>Connecting Frontend and Backend</li><li><b>22</b>Advanced API Features</li><li><b>23</b>Testing, Debugging and Deployment</li><li><b>24</b>Final Project and Demo Day</li>
-            </ol>
+            <ol class="sessions"><li><button type="button" data-deck="web-01"><b>01</b><span>Introduction to Web Development</span><em>15 slides</em></button></li><li><button type="button" data-deck="web-02"><b>02</b><span>HTML Fundamentals</span><em>15 slides</em></button></li><li><button type="button" data-deck="web-03"><b>03</b><span>Forms and Semantic HTML</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-04"><b>04</b><span>CSS Fundamentals</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-05"><b>05</b><span>CSS Layout and Flexbox</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-06"><b>06</b><span>CSS Grid and Responsive Design</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-07"><b>07</b><span>Modern UI with CSS</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-08"><b>08</b><span>JavaScript Fundamentals</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-09"><b>09</b><span>Functions and Arrays</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-10"><b>10</b><span>DOM and Events</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-11"><b>11</b><span>APIs and Async JavaScript</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-12"><b>12</b><span>Frontend Final Project</span><em>15 slides</em></button></li><li><button type="button" data-deck="web-13"><b>13</b><span>Backend Fundamentals and Node.js</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-14"><b>14</b><span>Express.js</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-15"><b>15</b><span>REST APIs and CRUD</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-16"><b>16</b><span>Databases and MongoDB</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-17"><b>17</b><span>MongoDB with Mongoose</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-18"><b>18</b><span>Professional Backend Architecture</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-19"><b>19</b><span>Authentication</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-20"><b>20</b><span>Authorization and Security</span><em>17 slides</em></button></li><li><button type="button" data-deck="web-21"><b>21</b><span>Connecting Frontend and Backend</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-22"><b>22</b><span>Advanced API Features</span><em>16 slides</em></button></li><li><button type="button" data-deck="web-23"><b>23</b><span>Testing, Debugging and Deployment</span><em>15 slides</em></button></li><li><button type="button" data-deck="web-24"><b>24</b><span>Final Project and Demo Day</span><em>14 slides</em></button></li></ol>
           </details>
         </div>
       </article>
 
       <article class="course reveal">
-        <div class="slides">
-          <button data-full="assets/teaching/scratch03-p1.webp" aria-label="Enlarge slide: Lecture 3"><img src="assets/teaching/scratch03-p1.webp" alt="Lecture 3: Animal Race Game and intro to control" loading="lazy"></button>
-          <button data-full="assets/teaching/scratch13-p1.webp" aria-label="Enlarge slide: Lecture 13"><img src="assets/teaching/scratch13-p1.webp" alt="Lecture 13: Say, Think and the Racing Car Game" loading="lazy"></button>
-          <button data-full="assets/teaching/scratch03-p2.webp" aria-label="Enlarge slide: what makes a race game"><img src="assets/teaching/scratch03-p2.webp" alt="Lecture slide: what makes a race game" loading="lazy"></button>
+        <div class="slides decks">
+          <button type="button" class="deck" data-deck="sc-01" aria-label="Open Lecture 1: Meet MIT Scratch &amp; Make Things Move, 10 slides"><img src="assets/decks/sc-01/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 1</b><span>Meet MIT Scratch &amp; Make Things Move</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-02" aria-label="Open Lecture 2: Design &amp; Speed Up Your Character, 10 slides"><img src="assets/decks/sc-02/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 2</b><span>Design &amp; Speed Up Your Character</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-03" aria-label="Open Lecture 3: Animal Race Game &amp; Intro to Control, 10 slides"><img src="assets/decks/sc-03/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 3</b><span>Animal Race Game &amp; Intro to Control</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-04" aria-label="Open Lecture 4: Hide &amp; Seek and a Dance Party, 10 slides"><img src="assets/decks/sc-04/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 4</b><span>Hide &amp; Seek and a Dance Party</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-05" aria-label="Open Lecture 5: Four Seasons &amp; the Magic Flower, 10 slides"><img src="assets/decks/sc-05/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 5</b><span>Four Seasons &amp; the Magic Flower</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-06" aria-label="Open Lecture 6: Continuous Stories &amp; Dodge Ball, 10 slides"><img src="assets/decks/sc-06/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 6</b><span>Continuous Stories &amp; Dodge Ball</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-07" aria-label="Open Lecture 7: Animate Your Name &amp; Pick the Flower, 10 slides"><img src="assets/decks/sc-07/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 7</b><span>Animate Your Name &amp; Pick the Flower</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-08" aria-label="Open Lecture 8: Birthday Surprise &amp; Maze Game, 10 slides"><img src="assets/decks/sc-08/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 8</b><span>Birthday Surprise &amp; Maze Game</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-09" aria-label="Open Lecture 9: Quiz 1 &amp; Get Ready for Sequences, 10 slides"><img src="assets/decks/sc-09/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 9</b><span>Quiz 1 &amp; Get Ready for Sequences</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-10" aria-label="Open Lecture 10: Sequences with the Motion Block, 10 slides"><img src="assets/decks/sc-10/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 10</b><span>Sequences with the Motion Block</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-11" aria-label="Open Lecture 11: Jump, Fly &amp; Musical Instruments, 10 slides"><img src="assets/decks/sc-11/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 11</b><span>Jump, Fly &amp; Musical Instruments</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-12" aria-label="Open Lecture 12: Costume Tags &amp; More Motion Projects, 10 slides"><img src="assets/decks/sc-12/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 12</b><span>Costume Tags &amp; More Motion Projects</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-13" aria-label="Open Lecture 13: Say, Think &amp; the Racing Car Game, 10 slides"><img src="assets/decks/sc-13/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 13</b><span>Say, Think &amp; the Racing Car Game</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-14" aria-label="Open Lecture 14: Looks Fluency &amp; Collect the Garbage, 10 slides"><img src="assets/decks/sc-14/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 14</b><span>Looks Fluency &amp; Collect the Garbage</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-15" aria-label="Open Lecture 15: Dancing Sprites Assessment Project, 10 slides"><img src="assets/decks/sc-15/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 15</b><span>Dancing Sprites Assessment Project</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-16" aria-label="Open Lecture 16: Sound Effects for the Racing Car Game, 10 slides"><img src="assets/decks/sc-16/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 16</b><span>Sound Effects for the Racing Car Game</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-17" aria-label="Open Lecture 17: Musical Group Project &amp; Quiz 2, 10 slides"><img src="assets/decks/sc-17/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 17</b><span>Musical Group Project &amp; Quiz 2</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-18" aria-label="Open Lecture 18: Control Fluency &amp; Events, 10 slides"><img src="assets/decks/sc-18/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 18</b><span>Control Fluency &amp; Events</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-19" aria-label="Open Lecture 19: Conditionals, Operators &amp; Broadcasts, 10 slides"><img src="assets/decks/sc-19/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 19</b><span>Conditionals, Operators &amp; Broadcasts</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-20" aria-label="Open Lecture 20: Geometry with Control &amp; Parallelism, 10 slides"><img src="assets/decks/sc-20/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 20</b><span>Geometry with Control &amp; Parallelism</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-21" aria-label="Open Lecture 21: Quiz 3 · Loop-Powered Puzzle, 10 slides"><img src="assets/decks/sc-21/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 21</b><span>Quiz 3 · Loop-Powered Puzzle</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-22" aria-label="Open Lecture 22: General Control Block Fluency, 10 slides"><img src="assets/decks/sc-22/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 22</b><span>General Control Block Fluency</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-23" aria-label="Open Lecture 23: Full Games: Cat Chasing Mouse, 10 slides"><img src="assets/decks/sc-23/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 23</b><span>Full Games: Cat Chasing Mouse</span><em>10 slides</em></span></button>
+          <button type="button" class="deck" data-deck="sc-24" aria-label="Open Lecture 24: Quiz 4 · Self-Made Project, 10 slides"><img src="assets/decks/sc-24/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Lecture 24</b><span>Quiz 4 · Self-Made Project</span><em>10 slides</em></span></button>
         </div>
         <div class="course-body">
           <div class="course-meta"><span>Zoomix</span><span>Young learners</span><span>24 lectures · 4 quizzes</span></div>
@@ -487,30 +585,50 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
           <p>Game-based lessons that grow from moving a character to full games with events, loops, conditionals and broadcasts, with a self-made final project.</p>
           <details>
             <summary>All 24 lectures</summary>
-            <ol class="sessions">
-              <li><b>01</b>Meet ScratchJr: Make Things Move</li><li><b>02</b>Design &amp; Speed Up Your Character</li><li><b>03</b>Animal Race Game &amp; Intro to Control</li><li><b>04</b>Hide &amp; Seek and a Dance Party</li><li><b>05</b>Four Seasons &amp; the Magic Flower</li><li><b>06</b>Continuous Stories &amp; Dodge Ball</li><li><b>07</b>Animate Your Name &amp; Pick the Flower</li><li><b>08</b>Birthday Surprise &amp; Maze Game</li><li><b>09</b>Quiz 1 · Welcome to MIT Scratch</li><li><b>10</b>Sequences with the Motion Block</li><li><b>11</b>Jump, Fly &amp; Musical Instruments</li><li><b>12</b>Costume Tags &amp; More Motion Projects</li><li><b>13</b>Say, Think &amp; the Racing Car Game</li><li><b>14</b>Looks Fluency &amp; Collect the Garbage</li><li><b>15</b>Dancing Sprites Assessment Project</li><li><b>16</b>Sound Effects for the Racing Car Game</li><li><b>17</b>Musical Group Project &amp; Quiz 2</li><li><b>18</b>Control Fluency &amp; Events</li><li><b>19</b>Conditionals, Operators &amp; Broadcasts</li><li><b>20</b>Geometry with Control &amp; Parallelism</li><li><b>21</b>Quiz 3 · Loop-Powered Puzzle</li><li><b>22</b>General Control Block Fluency</li><li><b>23</b>Full Games: Cat Chasing Mouse</li><li><b>24</b>Quiz 4 · Self-Made Project</li>
-            </ol>
+            <ol class="sessions"><li><button type="button" data-deck="sc-01"><b>01</b><span>Meet MIT Scratch &amp; Make Things Move</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-02"><b>02</b><span>Design &amp; Speed Up Your Character</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-03"><b>03</b><span>Animal Race Game &amp; Intro to Control</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-04"><b>04</b><span>Hide &amp; Seek and a Dance Party</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-05"><b>05</b><span>Four Seasons &amp; the Magic Flower</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-06"><b>06</b><span>Continuous Stories &amp; Dodge Ball</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-07"><b>07</b><span>Animate Your Name &amp; Pick the Flower</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-08"><b>08</b><span>Birthday Surprise &amp; Maze Game</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-09"><b>09</b><span>Quiz 1 &amp; Get Ready for Sequences</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-10"><b>10</b><span>Sequences with the Motion Block</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-11"><b>11</b><span>Jump, Fly &amp; Musical Instruments</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-12"><b>12</b><span>Costume Tags &amp; More Motion Projects</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-13"><b>13</b><span>Say, Think &amp; the Racing Car Game</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-14"><b>14</b><span>Looks Fluency &amp; Collect the Garbage</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-15"><b>15</b><span>Dancing Sprites Assessment Project</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-16"><b>16</b><span>Sound Effects for the Racing Car Game</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-17"><b>17</b><span>Musical Group Project &amp; Quiz 2</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-18"><b>18</b><span>Control Fluency &amp; Events</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-19"><b>19</b><span>Conditionals, Operators &amp; Broadcasts</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-20"><b>20</b><span>Geometry with Control &amp; Parallelism</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-21"><b>21</b><span>Quiz 3 · Loop-Powered Puzzle</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-22"><b>22</b><span>General Control Block Fluency</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-23"><b>23</b><span>Full Games: Cat Chasing Mouse</span><em>10 slides</em></button></li><li><button type="button" data-deck="sc-24"><b>24</b><span>Quiz 4 · Self-Made Project</span><em>10 slides</em></button></li></ol>
           </details>
         </div>
       </article>
 
       <article class="course reveal">
-        <div class="slides">
-          <button data-full="assets/teaching/applab08-p1.webp" aria-label="Enlarge slide: Session 8"><img src="assets/teaching/applab08-p1.webp" alt="Session 8: Crash! Bang! Score! Sprite collisions" loading="lazy"></button>
-          <button data-full="assets/teaching/applab08-p4.webp" aria-label="Enlarge slide: what is a collision"><img src="assets/teaching/applab08-p4.webp" alt="Lesson slide: what is a collision" loading="lazy"></button>
-          <button data-full="assets/teaching/applab-p4.webp" aria-label="Enlarge slide: UI design"><img src="assets/teaching/applab-p4.webp" alt="App Lab session on UI design" loading="lazy"></button>
+        <div class="slides decks">
+          <button type="button" class="deck" data-deck="al-00" aria-label="Open Course overview: All 12 sessions at a glance, 14 slides"><img src="assets/decks/al-00/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Course overview</b><span>All 12 sessions at a glance</span><em>14 slides</em></span></button>
+          <button type="button" class="deck" data-deck="al-04" aria-label="Open Session 4: Double the Magic (Nested Loops), 17 slides"><img src="assets/decks/al-04/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 4</b><span>Double the Magic (Nested Loops)</span><em>17 slides</em></span></button>
+          <button type="button" class="deck" data-deck="al-05" aria-label="Open Session 5: The Magic of Choices (Conditionals), 16 slides"><img src="assets/decks/al-05/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 5</b><span>The Magic of Choices (Conditionals)</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="al-06" aria-label="Open Session 6: The Magic While Loop, 16 slides"><img src="assets/decks/al-06/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 6</b><span>The Magic While Loop</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="al-07" aria-label="Open Session 7: The Magic Memory Boxes (Variables), 15 slides"><img src="assets/decks/al-07/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 7</b><span>The Magic Memory Boxes (Variables)</span><em>15 slides</em></span></button>
+          <button type="button" class="deck" data-deck="al-08" aria-label="Open Session 8: Crash! Bang! Score! (Sprite Collisions), 15 slides"><img src="assets/decks/al-08/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 8</b><span>Crash! Bang! Score! (Sprite Collisions)</span><em>15 slides</em></span></button>
+          <button type="button" class="deck" data-deck="al-09" aria-label="Open Session 9: Be an Internet Superhero (Digital Safety), 16 slides"><img src="assets/decks/al-09/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 9</b><span>Be an Internet Superhero (Digital Safety)</span><em>16 slides</em></span></button>
+          <button type="button" class="deck" data-deck="al-10" aria-label="Open Session 10: Build Your First Game (Brainstorming), 14 slides"><img src="assets/decks/al-10/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 10</b><span>Build Your First Game (Brainstorming)</span><em>14 slides</em></span></button>
+          <button type="button" class="deck" data-deck="al-11" aria-label="Open Session 11: Bring Your Game to Life, 9 slides"><img src="assets/decks/al-11/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 11</b><span>Bring Your Game to Life</span><em>9 slides</em></span></button>
+          <button type="button" class="deck" data-deck="al-12" aria-label="Open Session 12: The Grand Finale (Project Showcase), 8 slides"><img src="assets/decks/al-12/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Session 12</b><span>The Grand Finale (Project Showcase)</span><em>8 slides</em></span></button>
         </div>
         <div class="course-body">
           <div class="course-meta"><span>Zoomix</span><span>Kids</span><span>12 sessions</span></div>
           <h3>App Lab for Kids</h3>
           <p>Kids design real app screens and code games step by step, ending with a project showcase.</p>
           <div class="tags"><span class="tag">UI design</span><span class="tag">Events</span><span class="tag">Loops &amp; nested loops</span><span class="tag">Conditionals</span><span class="tag">Variables</span><span class="tag">Sprite collisions</span><span class="tag">Digital safety</span><span class="tag">Final game</span></div>
+          <details>
+            <summary>All session decks</summary>
+            <ol class="sessions">
+              <li><button type="button" data-deck="al-00"><b>00</b><span>Course overview: all 12 sessions</span><em>14 slides</em></button></li>
+              <li><button type="button" data-deck="al-04"><b>04</b><span>Double the Magic (Nested Loops)</span><em>17 slides</em></button></li>
+              <li><button type="button" data-deck="al-05"><b>05</b><span>The Magic of Choices (Conditionals)</span><em>16 slides</em></button></li>
+              <li><button type="button" data-deck="al-06"><b>06</b><span>The Magic While Loop</span><em>16 slides</em></button></li>
+              <li><button type="button" data-deck="al-07"><b>07</b><span>The Magic Memory Boxes (Variables)</span><em>15 slides</em></button></li>
+              <li><button type="button" data-deck="al-08"><b>08</b><span>Crash! Bang! Score! (Sprite Collisions)</span><em>15 slides</em></button></li>
+              <li><button type="button" data-deck="al-09"><b>09</b><span>Be an Internet Superhero (Digital Safety)</span><em>16 slides</em></button></li>
+              <li><button type="button" data-deck="al-10"><b>10</b><span>Build Your First Game (Brainstorming)</span><em>14 slides</em></button></li>
+              <li><button type="button" data-deck="al-11"><b>11</b><span>Bring Your Game to Life</span><em>9 slides</em></button></li>
+              <li><button type="button" data-deck="al-12"><b>12</b><span>The Grand Finale (Project Showcase)</span><em>8 slides</em></button></li>
+            </ol>
+          </details>
         </div>
       </article>
 
       <article class="course wide split reveal">
-        <div class="slides">
-          <button data-full="assets/teaching/aiprog-p1.webp" aria-label="Enlarge slide: AI and Programming Diploma"><img src="assets/teaching/aiprog-p1.webp" alt="AI and Programming Diploma cover (Arabic)" loading="lazy"></button>
+        <div class="slides decks">
+          <button type="button" class="deck" data-deck="ap-00" aria-label="Open Diploma outline: 4 levels, grade 11, 7 slides"><img src="assets/decks/ap-00/thumb.webp" alt="" loading="lazy" width="480" height="270"><span class="cap"><b>Diploma outline</b><span>4 levels, grade 11</span><em>7 slides</em></span></button>
         </div>
         <div class="course-body">
           <div class="course-meta"><span>Zoomix</span><span>Grade 11 students</span><span>4 levels · 6 weeks · 2 × 2-hour sessions a week</span></div>
@@ -521,7 +639,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       </article>
 
     </div>
-    <p class="note reveal">Slides shown as previews. The full course material was produced for Zoomix and stays with the academy.</p>
+    <p class="note reveal">Every lecture deck can be viewed slide by slide here. The course material was produced for Zoomix and stays with the academy.</p>
   </div>
 </section>
 
@@ -735,6 +853,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <a class="btn btn-wa" href="https://wa.me/201099119352" target="_blank" rel="noopener" tabindex="-1"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 4 3.5 1.5.6 2 .7 2.8.6.4-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.3Z"/></svg>WhatsApp</a>
 </div>
 
+<div class="dv" id="dv" role="dialog" aria-modal="true" aria-labelledby="dvTitle">
+  <div class="dv-top"><div class="dv-title"><small id="dvCourse"></small><b id="dvTitle"></b></div><span class="dv-count" id="dvCount" aria-live="polite"></span><button type="button" class="dv-x" id="dvClose" aria-label="Close lecture viewer">×</button></div>
+  <div class="dv-stage" id="dvStage"><button type="button" class="dv-nav dv-prev" id="dvPrev" aria-label="Previous slide">‹</button><img id="dvImg" alt=""><button type="button" class="dv-nav dv-next" id="dvNext" aria-label="Next slide">›</button></div>
+  <div class="dv-thumbs" id="dvThumbs"></div>
+  <div class="dv-foot"><button type="button" id="dvPrevDeck"></button><button type="button" id="dvNextDeck"></button></div>
+</div>
+
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image preview"><button type="button" id="lbClose" aria-label="Close preview">×</button><img id="lbImg" alt=""></div>
 
 <script>
@@ -759,6 +884,51 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     new IntersectionObserver(function(es){es.forEach(function(x){pastCta=!x.isIntersecting&&x.boundingClientRect.top<0;upd()})}).observe(cta);
     if(contact)new IntersectionObserver(function(es){es.forEach(function(x){atContact=x.isIntersecting;upd()})},{rootMargin:'0px 0px -30% 0px'}).observe(contact);
   }
+
+  var DECKS={"ai-00":{"c":"AI & Automation Diploma","l":"Course outline","t":"5 levels, 36 hours over 3 months","n":6},"ai-01":{"c":"AI & Automation Diploma","l":"Lecture 1","t":"AI Fundamentals: AI, ML & deep learning, real-world applications, data privacy","n":30},"ai-02":{"c":"AI & Automation Diploma","l":"Lecture 2","t":"Generative AI & Ethics","n":30},"ai-03":{"c":"AI & Automation Diploma","l":"Lecture 3","t":"Gemini & NotebookLM for research and study","n":15},"ai-04":{"c":"AI & Automation Diploma","l":"Lecture 4","t":"Claude and visual production tools: Artifacts, DALL·E, Sora, Luma, Suno (Arabic)","n":15},"ai-05":{"c":"AI & Automation Diploma","l":"Lecture 5","t":"AI for brand identity and video: script, characters, scenes, voice-over, editing (Arabic)","n":22},"web-01":{"c":"Full-Stack Web Development","l":"Session 1","t":"Introduction to Web Development","n":15},"web-02":{"c":"Full-Stack Web Development","l":"Session 2","t":"HTML Fundamentals","n":15},"web-03":{"c":"Full-Stack Web Development","l":"Session 3","t":"Forms and Semantic HTML","n":16},"web-04":{"c":"Full-Stack Web Development","l":"Session 4","t":"CSS Fundamentals","n":16},"web-05":{"c":"Full-Stack Web Development","l":"Session 5","t":"CSS Layout and Flexbox","n":16},"web-06":{"c":"Full-Stack Web Development","l":"Session 6","t":"CSS Grid and Responsive Design","n":16},"web-07":{"c":"Full-Stack Web Development","l":"Session 7","t":"Modern UI with CSS","n":16},"web-08":{"c":"Full-Stack Web Development","l":"Session 8","t":"JavaScript Fundamentals","n":16},"web-09":{"c":"Full-Stack Web Development","l":"Session 9","t":"Functions and Arrays","n":16},"web-10":{"c":"Full-Stack Web Development","l":"Session 10","t":"DOM and Events","n":16},"web-11":{"c":"Full-Stack Web Development","l":"Session 11","t":"APIs and Async JavaScript","n":16},"web-12":{"c":"Full-Stack Web Development","l":"Session 12","t":"Frontend Final Project","n":15},"web-13":{"c":"Full-Stack Web Development","l":"Session 13","t":"Backend Fundamentals and Node.js","n":16},"web-14":{"c":"Full-Stack Web Development","l":"Session 14","t":"Express.js","n":16},"web-15":{"c":"Full-Stack Web Development","l":"Session 15","t":"REST APIs and CRUD","n":16},"web-16":{"c":"Full-Stack Web Development","l":"Session 16","t":"Databases and MongoDB","n":16},"web-17":{"c":"Full-Stack Web Development","l":"Session 17","t":"MongoDB with Mongoose","n":16},"web-18":{"c":"Full-Stack Web Development","l":"Session 18","t":"Professional Backend Architecture","n":16},"web-19":{"c":"Full-Stack Web Development","l":"Session 19","t":"Authentication","n":16},"web-20":{"c":"Full-Stack Web Development","l":"Session 20","t":"Authorization and Security","n":17},"web-21":{"c":"Full-Stack Web Development","l":"Session 21","t":"Connecting Frontend and Backend","n":16},"web-22":{"c":"Full-Stack Web Development","l":"Session 22","t":"Advanced API Features","n":16},"web-23":{"c":"Full-Stack Web Development","l":"Session 23","t":"Testing, Debugging and Deployment","n":15},"web-24":{"c":"Full-Stack Web Development","l":"Session 24","t":"Final Project and Demo Day","n":14},"sc-01":{"c":"Scratch Curriculum","l":"Lecture 1","t":"Meet MIT Scratch & Make Things Move","n":10},"sc-02":{"c":"Scratch Curriculum","l":"Lecture 2","t":"Design & Speed Up Your Character","n":10},"sc-03":{"c":"Scratch Curriculum","l":"Lecture 3","t":"Animal Race Game & Intro to Control","n":10},"sc-04":{"c":"Scratch Curriculum","l":"Lecture 4","t":"Hide & Seek and a Dance Party","n":10},"sc-05":{"c":"Scratch Curriculum","l":"Lecture 5","t":"Four Seasons & the Magic Flower","n":10},"sc-06":{"c":"Scratch Curriculum","l":"Lecture 6","t":"Continuous Stories & Dodge Ball","n":10},"sc-07":{"c":"Scratch Curriculum","l":"Lecture 7","t":"Animate Your Name & Pick the Flower","n":10},"sc-08":{"c":"Scratch Curriculum","l":"Lecture 8","t":"Birthday Surprise & Maze Game","n":10},"sc-09":{"c":"Scratch Curriculum","l":"Lecture 9","t":"Quiz 1 & Get Ready for Sequences","n":10},"sc-10":{"c":"Scratch Curriculum","l":"Lecture 10","t":"Sequences with the Motion Block","n":10},"sc-11":{"c":"Scratch Curriculum","l":"Lecture 11","t":"Jump, Fly & Musical Instruments","n":10},"sc-12":{"c":"Scratch Curriculum","l":"Lecture 12","t":"Costume Tags & More Motion Projects","n":10},"sc-13":{"c":"Scratch Curriculum","l":"Lecture 13","t":"Say, Think & the Racing Car Game","n":10},"sc-14":{"c":"Scratch Curriculum","l":"Lecture 14","t":"Looks Fluency & Collect the Garbage","n":10},"sc-15":{"c":"Scratch Curriculum","l":"Lecture 15","t":"Dancing Sprites Assessment Project","n":10},"sc-16":{"c":"Scratch Curriculum","l":"Lecture 16","t":"Sound Effects for the Racing Car Game","n":10},"sc-17":{"c":"Scratch Curriculum","l":"Lecture 17","t":"Musical Group Project & Quiz 2","n":10},"sc-18":{"c":"Scratch Curriculum","l":"Lecture 18","t":"Control Fluency & Events","n":10},"sc-19":{"c":"Scratch Curriculum","l":"Lecture 19","t":"Conditionals, Operators & Broadcasts","n":10},"sc-20":{"c":"Scratch Curriculum","l":"Lecture 20","t":"Geometry with Control & Parallelism","n":10},"sc-21":{"c":"Scratch Curriculum","l":"Lecture 21","t":"Quiz 3 · Loop-Powered Puzzle","n":10},"sc-22":{"c":"Scratch Curriculum","l":"Lecture 22","t":"General Control Block Fluency","n":10},"sc-23":{"c":"Scratch Curriculum","l":"Lecture 23","t":"Full Games: Cat Chasing Mouse","n":10},"sc-24":{"c":"Scratch Curriculum","l":"Lecture 24","t":"Quiz 4 · Self-Made Project","n":10},"al-00":{"c":"App Lab for Kids","l":"Course overview","t":"All 12 sessions at a glance","n":14},"al-04":{"c":"App Lab for Kids","l":"Session 4","t":"Double the Magic (Nested Loops)","n":17},"al-05":{"c":"App Lab for Kids","l":"Session 5","t":"The Magic of Choices (Conditionals)","n":16},"al-06":{"c":"App Lab for Kids","l":"Session 6","t":"The Magic While Loop","n":16},"al-07":{"c":"App Lab for Kids","l":"Session 7","t":"The Magic Memory Boxes (Variables)","n":15},"al-08":{"c":"App Lab for Kids","l":"Session 8","t":"Crash! Bang! Score! (Sprite Collisions)","n":15},"al-09":{"c":"App Lab for Kids","l":"Session 9","t":"Be an Internet Superhero (Digital Safety)","n":16},"al-10":{"c":"App Lab for Kids","l":"Session 10","t":"Build Your First Game (Brainstorming)","n":14},"al-11":{"c":"App Lab for Kids","l":"Session 11","t":"Bring Your Game to Life","n":9},"al-12":{"c":"App Lab for Kids","l":"Session 12","t":"The Grand Finale (Project Showcase)","n":8},"ap-00":{"c":"AI & Programming Diploma","l":"Diploma outline","t":"4 levels, grade 11","n":7}},ORDER={"ai":["ai-00","ai-01","ai-02","ai-03","ai-04","ai-05"],"web":["web-01","web-02","web-03","web-04","web-05","web-06","web-07","web-08","web-09","web-10","web-11","web-12","web-13","web-14","web-15","web-16","web-17","web-18","web-19","web-20","web-21","web-22","web-23","web-24"],"scratch":["sc-01","sc-02","sc-03","sc-04","sc-05","sc-06","sc-07","sc-08","sc-09","sc-10","sc-11","sc-12","sc-13","sc-14","sc-15","sc-16","sc-17","sc-18","sc-19","sc-20","sc-21","sc-22","sc-23","sc-24"],"applab":["al-00","al-04","al-05","al-06","al-07","al-08","al-09","al-10","al-11","al-12"],"aiprog":["ap-00"]},COURSE_OF={};
+  Object.keys(ORDER).forEach(function(c){ORDER[c].forEach(function(id){COURSE_OF[id]=c})});
+  var dv=document.getElementById('dv'),dvImg=document.getElementById('dvImg'),dvThumbs=document.getElementById('dvThumbs'),
+      dvPrev=document.getElementById('dvPrev'),dvNext=document.getElementById('dvNext'),dvPD=document.getElementById('dvPrevDeck'),dvND=document.getElementById('dvNextDeck'),
+      cur=null,idx=1,lastFocus=null;
+  function src(id,i){return 'assets/decks/'+id+'/'+(i<10?'0':'')+i+'.webp'}
+  function sib(d){var o=ORDER[COURSE_OF[cur]],k=o.indexOf(cur)+d;return k>=0&&k<o.length?o[k]:null}
+  function openDeck(id,i){
+    if(!DECKS[id])return;
+    var wasOpen=dv.classList.contains('open');
+    cur=id;idx=i||1;var d=DECKS[id];
+    document.getElementById('dvCourse').textContent=d.c+' · '+d.l;
+    document.getElementById('dvTitle').textContent=d.t;
+    var h='';for(var k=1;k<=d.n;k++)h+='<button type="button" data-i="'+k+'" aria-label="Slide '+k+'"><img src="'+src(id,k)+'" alt="" loading="lazy"></button>';
+    dvThumbs.innerHTML=h;dvThumbs.scrollLeft=0;
+    var p=sib(-1),n=sib(1);
+    dvPD.disabled=!p;dvPD.textContent=p?'← '+DECKS[p].l:'';dvPD.title=p?DECKS[p].t:'';
+    dvND.disabled=!n;dvND.textContent=n?DECKS[n].l+' →':'';dvND.title=n?DECKS[n].t:'';
+    if(!wasOpen){lastFocus=document.activeElement;dv.classList.add('open');document.documentElement.style.overflow='hidden';document.getElementById('dvClose').focus()}
+    show();
+  }
+  function show(){
+    var d=DECKS[cur];
+    dvImg.src=src(cur,idx);dvImg.alt=d.t+', slide '+idx+' of '+d.n;
+    document.getElementById('dvCount').textContent=idx+' / '+d.n;
+    dvPrev.disabled=idx<=1;dvNext.disabled=idx>=d.n;
+    var on=dvThumbs.querySelector('.on');if(on)on.classList.remove('on');
+    var t=dvThumbs.querySelector('[data-i="'+idx+'"]');if(t){t.classList.add('on');var L=t.offsetLeft-dvThumbs.clientWidth/2+t.clientWidth/2;dvThumbs.scrollTo({left:L,behavior:'smooth'})}
+    if(idx<d.n){var pre=new Image();pre.src=src(cur,idx+1)}
+  }
+  function go(s){var d=DECKS[cur],j=idx+s;if(j<1||j>d.n)return;idx=j;show()}
+  function closeDeck(){dv.classList.remove('open');document.documentElement.style.overflow='';dvImg.removeAttribute('src');dvThumbs.innerHTML='';if(lastFocus)lastFocus.focus()}
+  dvPrev.addEventListener('click',function(){go(-1)});
+  dvNext.addEventListener('click',function(){go(1)});
+  dvPD.addEventListener('click',function(){var p=sib(-1);if(p)openDeck(p,1)});
+  dvND.addEventListener('click',function(){var n=sib(1);if(n)openDeck(n,1)});
+  document.getElementById('dvClose').addEventListener('click',closeDeck);
+  dvThumbs.addEventListener('click',function(e){var b=e.target.closest('[data-i]');if(b){idx=+b.getAttribute('data-i');show()}});
+  document.getElementById('dvStage').addEventListener('click',function(e){if(e.target.id==='dvStage')closeDeck()});
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-deck]');if(b){e.preventDefault();openDeck(b.getAttribute('data-deck'),1)}});
+  addEventListener('keydown',function(e){if(!dv.classList.contains('open'))return;if(e.key==='ArrowRight'){go(1);e.preventDefault()}else if(e.key==='ArrowLeft'){go(-1);e.preventDefault()}else if(e.key==='Escape'){closeDeck()}});
+  var tx=null,ty=null;
+  dvImg.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+  dvImg.addEventListener('touchend',function(e){if(tx===null)return;var dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))go(dx<0?1:-1);tx=null},{passive:true});
   var els=document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px'});
