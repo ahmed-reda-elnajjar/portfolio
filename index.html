@@ -1,1280 +1,734 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ahmed Reda Mohamed — Full-Stack Web Developer & AI / ML</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #0a0e1a;
-      --bg2:       #0f1626;
-      --bg3:       #141d30;
-      --border:    #1e2d45;
-      --accent:    #00d4ff;
-      --accent2:   #7c3aed;
-      --text:      #e2e8f0;
-      --muted:     #64748b;
-      --card:      #111827;
-      --radius:    12px;
-      --glow:      0 0 24px rgba(0,212,255,.18);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg2); }
-    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; width: 100%; z-index: 100;
-      backdrop-filter: blur(20px);
-      background: rgba(10,14,26,.85);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 64px;
-    }
-
-    .nav-logo {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 500; font-size: .95rem; color: var(--accent);
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--text); }
-
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      color: var(--muted); text-decoration: none; font-size: .875rem;
-      font-weight: 500; transition: color .2s;
-    }
-    .nav-links a:hover { color: var(--accent); }
-
-    .nav-toggle { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
-    .nav-toggle span {
-      width: 24px; height: 2px; background: var(--text);
-      transition: all .3s; border-radius: 2px;
-    }
-
-    /* ── HERO ── */
-    #hero {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center;
-      padding: 100px 2rem 4rem;
-      position: relative; overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute; inset: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,212,255,.12) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(124,58,237,.1) 0%, transparent 50%);
-    }
-
-    .hero-grid {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(30,45,69,.35) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(30,45,69,.35) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-    }
-
-    .hero-content { position: relative; z-index: 1; max-width: 780px; }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.25);
-      color: var(--accent); padding: .35rem 1rem; border-radius: 999px;
-      font-size: .8rem; font-weight: 500; margin-bottom: 1.5rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .hero-badge::before { content: ''; width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
-
-    @keyframes pulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(0,212,255,.6); }
-      50%      { box-shadow: 0 0 0 6px rgba(0,212,255,0); }
-    }
-
-    h1 {
-      font-size: clamp(2.4rem, 6vw, 4.2rem);
-      font-weight: 800; line-height: 1.1; margin-bottom: 1rem;
-      letter-spacing: -.02em;
-    }
-    h1 .name-accent { color: var(--accent); }
-
-    .hero-role {
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      color: var(--muted); font-weight: 400; margin-bottom: 1.5rem;
-    }
-    .hero-role strong { color: var(--text); font-weight: 600; }
-
-    .hero-summary {
-      font-size: .975rem; color: var(--muted); max-width: 620px;
-      margin: 0 auto 2.5rem; line-height: 1.75;
-    }
-
-    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: .5rem;
-      padding: .7rem 1.6rem; border-radius: 8px; font-weight: 600;
-      font-size: .9rem; text-decoration: none; transition: all .2s;
-      cursor: pointer; border: none;
-    }
-    .btn-primary {
-      background: var(--accent); color: #0a0e1a;
-      box-shadow: 0 0 20px rgba(0,212,255,.3);
-    }
-    .btn-primary:hover { background: #33dbff; box-shadow: 0 0 28px rgba(0,212,255,.45); transform: translateY(-1px); }
-
-    .btn-outline {
-      background: transparent; color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
-
-    .hero-links {
-      display: flex; gap: 1.5rem; justify-content: center;
-      font-size: .875rem;
-    }
-    .hero-links a {
-      display: flex; align-items: center; gap: .4rem;
-      color: var(--muted); text-decoration: none; transition: color .2s;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .hero-links a:hover { color: var(--accent); }
-
-    /* ── SECTIONS ── */
-    section { padding: 6rem 2rem; }
-    .container { max-width: 1100px; margin: 0 auto; }
-
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: .75rem; color: var(--accent); letter-spacing: .12em;
-      text-transform: uppercase; margin-bottom: .75rem;
-    }
-
-    h2 {
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 800; letter-spacing: -.02em; margin-bottom: 1rem;
-    }
-
-    .section-divider {
-      width: 48px; height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 2px; margin-bottom: 3rem;
-    }
-
-    /* ── SKILLS ── */
-    #skills { background: var(--bg2); }
-
-    .skills-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .skill-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.5rem;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .skill-card:hover { border-color: var(--accent); box-shadow: var(--glow); }
-
-    .skill-card-header {
-      display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem;
-    }
-
-    .skill-icon {
-      width: 38px; height: 38px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      background: rgba(0,212,255,.1); border: 1px solid rgba(0,212,255,.2);
-    }
-
-    .skill-card h3 { font-size: .95rem; font-weight: 700; color: var(--text); }
-
-    .skill-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .tag {
-      background: rgba(255,255,255,.05); border: 1px solid var(--border);
-      color: var(--muted); font-size: .75rem; padding: .25rem .65rem;
-      border-radius: 999px; font-family: 'JetBrains Mono', monospace;
-      transition: all .2s;
-    }
-    .tag:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ── PROJECTS ── */
-    .projects-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .project-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.75rem;
-      display: flex; flex-direction: column; gap: 1rem;
-      transition: border-color .2s, transform .2s, box-shadow .2s;
-      position: relative; overflow: hidden;
-    }
-    .project-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      opacity: 0; transition: opacity .2s;
-    }
-    .project-card:hover { border-color: rgba(0,212,255,.4); transform: translateY(-3px); box-shadow: var(--glow); }
-    .project-card:hover::before { opacity: 1; }
-
-    .project-header {
-      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
-    }
-
-    .project-badge {
-      font-size: .7rem; font-weight: 600; padding: .25rem .7rem;
-      border-radius: 999px; white-space: nowrap;
-    }
-    .badge-grad { background: rgba(0,212,255,.12); color: var(--accent); border: 1px solid rgba(0,212,255,.25); }
-    .badge-full { background: rgba(124,58,237,.12); color: #a78bfa; border: 1px solid rgba(124,58,237,.25); }
-    .badge-ml   { background: rgba(16,185,129,.12); color: #34d399; border: 1px solid rgba(16,185,129,.25); }
-    .badge-fe   { background: rgba(251,191,36,.1);  color: #fbbf24; border: 1px solid rgba(251,191,36,.25); }
-
-    .project-card h3 { font-size: 1.05rem; font-weight: 700; }
-    .project-card p { font-size: .875rem; color: var(--muted); line-height: 1.65; flex: 1; }
-
-    .project-tech { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .tech-tag {
-      background: rgba(0,212,255,.07); border: 1px solid rgba(0,212,255,.15);
-      color: var(--accent); font-size: .72rem; padding: .2rem .55rem;
-      border-radius: 5px; font-family: 'JetBrains Mono', monospace;
-    }
-
-    .project-links { display: flex; gap: .75rem; flex-wrap: wrap; }
-    .project-link {
-      display: inline-flex; align-items: center; gap: .35rem;
-      font-size: .8rem; font-weight: 600; color: var(--muted);
-      text-decoration: none; transition: color .2s;
-      padding: .3rem .7rem; border: 1px solid var(--border); border-radius: 6px;
-    }
-    .project-link:hover { color: var(--accent); border-color: var(--accent); }
-
-
-    /* ── FEATURED PROJECT ── */
-    .project-card.featured {
-      grid-column: 1 / -1; border-color: rgba(0,212,255,.35);
-      background: linear-gradient(180deg, rgba(0,212,255,.06), rgba(0,212,255,0) 55%), var(--card);
-    }
-    .project-card.featured::before { opacity: 1; }
-    #lokeify { scroll-margin-top: 90px; }
-    .project-card.featured p { flex: none; }
-    .project-sub { display: block; font-weight: 500; color: var(--muted); font-size: .85rem; margin-top: .2rem; }
-    .badge-feat { background: linear-gradient(90deg, rgba(0,212,255,.15), rgba(124,58,237,.15)); color: var(--text); border: 1px solid rgba(0,212,255,.35); }
-    .project-points { list-style: none; display: grid; gap: .6rem 1.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .project-points li { font-size: .85rem; color: var(--muted); line-height: 1.6; padding-left: 1rem; position: relative; }
-    .project-points li::before { content: '\25B8'; position: absolute; left: 0; color: var(--accent); }
-    .project-points strong { color: var(--text); font-weight: 600; }
-    .demo-login { font-size: .8rem; color: var(--muted); }
-    .demo-login code { font-family: 'JetBrains Mono', monospace; color: var(--accent); background: rgba(0,212,255,.07); padding: .1rem .4rem; border-radius: 4px; }
-    .project-link.primary { color: #0a0e1a; background: var(--accent); border-color: var(--accent); }
-    .project-link.primary:hover { color: #0a0e1a; opacity: .9; }
-
-    /* ── CERTIFICATIONS ── */
-    #certifications { background: var(--bg2); }
-
-    .certs-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .cert-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.5rem;
-      display: flex; gap: 1rem; align-items: flex-start;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .cert-card:hover { border-color: rgba(124,58,237,.5); box-shadow: 0 0 20px rgba(124,58,237,.1); }
-
-    .cert-icon {
-      width: 44px; height: 44px; flex-shrink: 0;
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-    }
-    .cert-icon.blue   { background: rgba(0,212,255,.1);  border: 1px solid rgba(0,212,255,.25); }
-    .cert-icon.purple { background: rgba(124,58,237,.1); border: 1px solid rgba(124,58,237,.25); }
-    .cert-icon.green  { background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.25); }
-    .cert-icon.gold   { background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.25); }
-
-    .cert-body h3 { font-size: .9rem; font-weight: 700; margin-bottom: .35rem; }
-    .cert-body .cert-issuer { font-size: .8rem; color: var(--accent); font-weight: 500; margin-bottom: .25rem; }
-    .cert-body .cert-date   { font-size: .75rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-
-    /* ── EDUCATION ── */
-    .edu-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 2rem;
-      display: flex; gap: 1.5rem; align-items: flex-start;
-      max-width: 700px;
-    }
-    .edu-icon {
-      width: 56px; height: 56px; flex-shrink: 0; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem;
-      background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.2);
-    }
-    .edu-body h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .35rem; }
-    .edu-body .edu-school { color: var(--accent); font-weight: 500; margin-bottom: .35rem; }
-    .edu-body .edu-date   { font-size: .8rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-
-    /* ── CONTACT ── */
-    #contact { background: var(--bg2); }
-
-    .contact-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
-    }
-
-    .contact-info p { color: var(--muted); font-size: .95rem; line-height: 1.75; margin-bottom: 2rem; }
-
-    .contact-links { display: flex; flex-direction: column; gap: .75rem; }
-
-    .contact-link {
-      display: flex; align-items: center; gap: .85rem;
-      color: var(--text); text-decoration: none; font-size: .9rem;
-      padding: .85rem 1.25rem;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; transition: all .2s;
-    }
-    .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateX(4px); }
-    .contact-link-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
-      background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.15);
-      flex-shrink: 0;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border); padding: 2rem;
-      text-align: center; color: var(--muted); font-size: .8rem;
-    }
-    footer span { color: var(--accent); }
-
-    /* ── ANIMATIONS ── */
-    .fade-up {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── RESPONSIVE ── */
-
-    /* Prevent any horizontal overflow globally */
-    html, body {
-      overflow-x: hidden;
-      max-width: 100%;
-    }
-
-    @media (max-width: 768px) {
-      /* Nav */
-      .nav-links {
-        display: none; flex-direction: column;
-        position: absolute; top: 64px; left: 0; right: 0;
-        background: var(--bg2); padding: 1rem 2rem 2rem;
-        border-bottom: 1px solid var(--border);
-      }
-      .nav-links.open { display: flex; }
-      .nav-toggle { display: flex; }
-
-      /* Sections */
-      section { padding: 4rem 1.25rem; }
-      .contact-grid { grid-template-columns: 1fr; }
-
-      /* Hero */
-      #hero { padding: 100px 1.25rem 3rem; }
-      .hero-content { width: 100%; }
-      .hero-badge { font-size: .72rem; padding: .3rem .85rem; }
-
-      h1 { font-size: 2.4rem; }
-
-      .hero-role { font-size: .95rem; }
-
-      .hero-summary { font-size: .875rem; padding: 0 .25rem; }
-
-      .hero-cta {
-        flex-direction: column;
-        align-items: stretch;
-        gap: .75rem;
-        padding: 0 .5rem;
-      }
-      .btn { justify-content: center; width: 100%; }
-
-      /* Hero links — stack vertically */
-      .hero-links {
-        flex-direction: column;
-        align-items: center;
-        gap: .6rem;
-        font-size: .78rem;
-      }
-      .hero-links a { justify-content: center; }
-    }
-
-    @media (max-width: 480px) {
-      .projects-grid, .skills-grid, .certs-grid { grid-template-columns: 1fr; }
-
-      h2 { font-size: 1.7rem; }
-
-      /* Project & cert cards */
-      .project-card, .cert-card, .skill-card { padding: 1.25rem; }
-
-      /* Education card */
-      .edu-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
-
-      /* Contact links */
-      .contact-link { font-size: .82rem; }
-
-      /* Footer */
-      footer { font-size: .75rem; line-height: 1.8; }
-    }
-
-    /* ── SCROLL PROGRESS ── */
-    #progress {
-      position: fixed; top: 0; left: 0; height: 2px; z-index: 200;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      width: 0%; transition: width .1s;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ahmed Reda Alnajjar — AI Automation Instructor & Full-Stack Developer</title>
+<meta name="description" content="Ahmed Reda Alnajjar: AI automation instructor and full-stack developer in Cairo. Courses in AI, automation (n8n, Make, Zapier), web development and coding for kids, plus shipped AI and e-commerce products.">
+<meta property="og:title" content="Ahmed Reda Alnajjar — AI Automation Instructor & Full-Stack Developer">
+<meta property="og:description" content="I teach AI and automation, and I build what I teach: AI-powered web products, automations and curricula.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ahmed-reda-alnajjar.vercel.app">
+<meta property="og:image" content="https://ahmed-reda-alnajjar.vercel.app/assets/projects/al3ataba.webp">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232563EB'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='26' font-weight='700' text-anchor='middle' fill='white'%3EAR%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --surface:#f7f8fa; --surface-2:#f1f3f6; --border:#e6e8ec; --border-strong:#d5d9e0;
+  --text:#0b1220; --text-2:#3d4657; --muted:#6b7385;
+  --accent:#2563eb; --accent-hover:#1d4ed8; --accent-soft:#eef4ff; --accent-ink:#1e40af;
+  --ok:#0f9f6e;
+  --radius:16px; --radius-sm:10px; --shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px rgba(16,24,40,.06);
+  --max:1120px; --gutter:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+section{padding:96px 0;scroll-margin-top:72px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.eyebrow::before{content:"";width:18px;height:2px;background:var(--accent);border-radius:2px}
+h1,h2,h3{margin:0;letter-spacing:-.02em;line-height:1.15}
+h2{font-size:clamp(28px,3.4vw,40px);font-weight:800;margin-top:12px}
+.lead{color:var(--text-2);font-size:18px;max-width:680px;margin:16px 0 0}
+.sec-head{margin-bottom:48px}
+.muted{color:var(--muted)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
+.nav.scrolled{border-bottom-color:var(--border)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em}
+.brand .mark{width:34px;height:34px;border-radius:10px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800}
+.nav-links{display:flex;align-items:center;gap:6px}
+.nav-links a{padding:8px 12px;border-radius:999px;font-size:14px;font-weight:500;color:var(--text-2)}
+.nav-links a:hover{background:var(--surface);color:var(--text)}
+.nav-cv{display:none}
+.menu-btn{display:none;border:1px solid var(--border);background:#fff;border-radius:10px;width:40px;height:40px;cursor:pointer}
+.menu-btn span{display:block;width:18px;height:2px;background:var(--text);margin:4px auto;border-radius:2px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 20px;border-radius:999px;font-weight:600;font-size:15px;border:1px solid transparent;transition:background .15s,border-color .15s,transform .15s;white-space:nowrap}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-ghost{background:#fff;border-color:var(--border-strong);color:var(--text)}
+.btn-ghost:hover{border-color:var(--text);}
+.btn-sm{height:38px;padding:0 16px;font-size:14px}
+
+/* hero */
+.hero{padding:72px 0 64px}
+.hero-grid{display:grid;grid-template-columns:1.25fr .85fr;gap:56px;align-items:center}
+.status{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 10px;border:1px solid var(--border);border-radius:999px;font-size:13px;font-weight:500;color:var(--text-2);background:#fff}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(15,159,110,.14)}
+.hero h1{font-size:clamp(40px,5.6vw,64px);font-weight:800;margin-top:22px}
+.hero .role{font-size:clamp(20px,2.2vw,26px);font-weight:600;color:var(--accent);margin-top:12px;letter-spacing:-.01em}
+.hero p.summary{font-size:18px;color:var(--text-2);margin:20px 0 0;max-width:620px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.socials{display:flex;flex-wrap:wrap;gap:18px;margin-top:28px;font-size:14px;color:var(--muted)}
+.socials a{display:inline-flex;align-items:center;gap:6px}
+.socials a:hover{color:var(--text)}
+.socials svg{width:16px;height:16px}
+.portrait{position:relative;justify-self:end;width:100%;max-width:380px}
+.avatar{position:relative;aspect-ratio:4/5;border-radius:28px;overflow:hidden;background:linear-gradient(150deg,#eef4ff 0%,#f7f8fa 55%,#e9eefb 100%);border:1px solid var(--border);box-shadow:var(--shadow)}
+.avatar span{position:absolute;inset:0;display:grid;place-items:center;font-size:96px;font-weight:800;color:#c7d4f3;letter-spacing:-.04em}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.float{position:absolute;z-index:2;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:10px 14px;font-size:13px;line-height:1.35}
+.float b{display:block;font-size:14px}
+.float.f1{left:-28px;bottom:56px}
+.float.f2{right:-18px;top:36px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);border-radius:var(--radius);background:#fff;margin-top:64px}
+.stat{padding:24px 28px;border-left:1px solid var(--border)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em}
+.stat span{font-size:14px;color:var(--muted)}
+
+/* experience */
+.bg-soft{background:var(--surface)}
+.timeline{display:grid;gap:20px}
+.job{display:grid;grid-template-columns:220px 1fr;gap:32px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px}
+.job .when{font-size:14px;color:var(--muted)}
+.job .when b{display:block;color:var(--text);font-size:16px;margin-bottom:4px}
+.job h3{font-size:20px;font-weight:700}
+.job .org{color:var(--accent);font-weight:600;margin-top:4px}
+.job ul{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.job li{position:relative;padding-left:22px;color:var(--text-2)}
+.job li::before{content:"";position:absolute;left:2px;top:10px;width:7px;height:7px;border-radius:2px;background:var(--accent)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tag{font-size:12.5px;font-weight:500;color:var(--text-2);background:var(--surface);border:1px solid var(--border);padding:4px 10px;border-radius:999px}
+.bg-soft .tag{background:#fff}
+
+/* teaching */
+.courses{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.course{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
+.course:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.course.wide{grid-column:1 / -1}
+.course.split{flex-direction:row}
+.course.split .slides{flex:0 0 42%;grid-auto-flow:row;grid-auto-columns:auto;align-content:center;overflow:visible}
+.course.split .course-body{justify-content:center}
+.slides{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,1fr);gap:10px;padding:12px;background:var(--surface-2);overflow-x:auto;scrollbar-width:thin;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.slides button{scroll-snap-align:start}
+.slides button{padding:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;cursor:zoom-in;aspect-ratio:16/9}
+.slides img{width:100%;height:100%;object-fit:cover}
+.course-body{padding:24px 26px 26px;display:flex;flex-direction:column;gap:10px;flex:1}
+.course-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted)}
+.course-meta span::before{content:"•";margin-right:6px;color:var(--border-strong)}
+.course-meta span:first-child::before{content:none}
+.course h3{font-size:20px;font-weight:700}
+.course p{margin:0;color:var(--text-2)}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:6px}
+.level{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
+.level small{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.level b{display:block;font-size:14.5px;margin:4px 0 6px}
+.level p{font-size:13px;color:var(--muted);line-height:1.5}
+details{border-top:1px solid var(--border);margin-top:8px;padding-top:12px}
+summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--accent);list-style:none;display:inline-flex;align-items:center;gap:6px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:18px;line-height:1}
+details[open] summary::after{content:"–"}
+ol.sessions{margin:14px 0 0;padding:0;list-style:none;columns:2;column-gap:24px;font-size:14px;color:var(--text-2)}
+ol.sessions li{break-inside:avoid;padding:4px 0;display:flex;gap:10px}
+ol.sessions li b{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600;min-width:22px}
+.note{font-size:13px;color:var(--muted);margin-top:20px}
+
+/* projects */
+.featured{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.proj{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
+.proj:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.shot{position:relative;aspect-ratio:16/10;background:var(--surface-2);border-bottom:1px solid var(--border);overflow:hidden}
+.shot::before{content:"";position:absolute;left:0;right:0;top:0;height:26px;background:#fff;border-bottom:1px solid var(--border);z-index:1}
+.shot::after{content:"";position:absolute;left:12px;top:9px;width:8px;height:8px;border-radius:50%;background:#f87171;box-shadow:14px 0 0 #fbbf24,28px 0 0 #34d399;z-index:2}
+.shot img{position:absolute;left:0;right:0;top:26px;width:100%;height:calc(100% - 26px);object-fit:cover;object-position:top}
+.proj-body{padding:22px 24px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
+.proj-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.proj h3{font-size:19px;font-weight:700}
+.year{font-size:13px;color:var(--muted);white-space:nowrap}
+.proj .sub{font-size:14px;font-weight:600;color:var(--accent);margin-top:-4px}
+.proj p{margin:0;color:var(--text-2);font-size:15px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:8px}
+.links a{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;padding:7px 12px;border-radius:999px;border:1px solid var(--border-strong)}
+.links a:hover{border-color:var(--text)}
+.links a.live{background:var(--text);color:#fff;border-color:var(--text)}
+.links a.live:hover{background:#000}
+.links svg{width:14px;height:14px}
+.more-head{display:flex;align-items:end;justify-content:space-between;margin:64px 0 20px}
+.more-head h3{font-size:22px;font-weight:700}
+.minis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mini{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.mini h4{margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.mini .sub{font-size:13px;color:var(--accent);font-weight:600}
+.mini p{margin:0;font-size:14px;color:var(--text-2)}
+.mini .tags{margin-top:4px}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.skill{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px}
+.skill h3{font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px}
+.skill h3 i{width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-style:normal;font-size:15px}
+.skill .tags{margin-top:14px}
+
+/* certs */
+.certs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.cert{display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px}
+.cert .ic{flex:none;width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.cert .ic svg{width:20px;height:20px}
+.cert h4{margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.cert p{margin:2px 0 0;font-size:14px;color:var(--muted)}
+.cert button{margin-top:8px;background:none;border:0;padding:0;font:inherit;font-size:13.5px;font-weight:600;color:var(--accent);cursor:pointer}
+.edu{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;margin-top:40px}
+.edu h3{font-size:20px;font-weight:700}
+.edu p{margin:6px 0 0;color:var(--text-2)}
+
+/* contact */
+.contact{background:var(--text);color:#fff;border-radius:28px;padding:64px;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.contact .eyebrow{color:#93b4ff}.contact .eyebrow::before{background:#93b4ff}
+.contact h2{color:#fff}
+.contact p{color:#c7cfdd;margin:16px 0 0;font-size:17px}
+.contact-list{display:grid;gap:12px}
+.contact-list a{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px solid rgba(255,255,255,.14);border-radius:14px;color:#fff;transition:background .15s}
+.contact-list a:hover{background:rgba(255,255,255,.06)}
+.contact-list svg{width:18px;height:18px;flex:none;color:#93b4ff}
+.contact-list small{display:block;font-size:12px;color:#9aa4b6}
+.contact .btn-primary{background:#fff;color:var(--text)}
+.contact .btn-primary:hover{background:#e8edf7}
+footer{padding:36px 0 48px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(11,18,32,.82);display:none;align-items:center;justify-content:center;padding:24px}
+.lb.open{display:flex}
+.lb img{max-width:min(1100px,100%);max-height:86vh;border-radius:12px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.lb button{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;font-size:22px;cursor:pointer}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}.course:hover,.proj:hover{transform:none}}
+
+/* responsive */
+@media (max-width:1000px){
+  .levels{grid-template-columns:repeat(2,1fr)}
+  .minis{grid-template-columns:repeat(2,1fr)}
+  .skills{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:860px){
+  :root{--gutter:20px}
+  section{padding:72px 0}
+  .nav-links{position:absolute;top:68px;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);flex-direction:column;align-items:stretch;padding:8px var(--gutter) 16px;display:none}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:12px;border-radius:10px}
+  .nav-links a.nav-cv{display:block;color:var(--accent);font-weight:600}
+  .menu-btn{display:block}
+  .nav .btn{display:none}
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .portrait{justify-self:start;max-width:220px;order:-1}
+  .float{display:none}
+  .hero h1{margin-top:18px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--border)}
+  .job{grid-template-columns:1fr;gap:12px;padding:24px}
+  .courses,.featured,.certs{grid-template-columns:1fr}
+  .course.split{flex-direction:column}
+  .course.split .slides{flex:none}
+  .contact{grid-template-columns:1fr;padding:40px 28px}
+}
+@media (max-width:560px){
+  :root{--gutter:16px}
+  body{font-size:15.5px}
+  .nav .wrap{height:60px}
+  .nav-links{top:60px}
+  .brand .mark{width:30px;height:30px;font-size:12px}
+  section{padding:56px 0;scroll-margin-top:60px}
+  .sec-head{margin-bottom:32px}
+  .lead{font-size:16px}
+  .hero h1{font-size:38px}
+  .hero p.summary{font-size:16px}
+  .status{font-size:12px;border-radius:14px}
+  .portrait{max-width:180px}
+  .avatar{border-radius:22px}
+  .course-meta{flex-direction:column;gap:2px}
+  .course-meta span::before{content:none}
+  .course-body{padding:20px}
+  .course h3{font-size:18px}
+  .levels{grid-template-columns:1fr 1fr!important}
+  .level:last-child{grid-column:1 / -1}
+  .level{padding:12px}
+  .proj-body{padding:18px 18px 20px}
+  .proj p{font-size:14.5px}
+  .job h3{font-size:18px}
+  .links a{padding:8px 12px}
+  .mini{padding:18px}
+  .cert{padding:16px}
+  .contact h2{font-size:28px}
+  .contact-list a{padding:12px 14px;font-size:14.5px;word-break:break-word}
+  .lb{padding:12px}
+  .lb button{top:10px;right:10px}
+  .hero{padding:44px 0 40px}
+  .cta .btn{flex:1 1 auto;justify-content:center}
+  .levels,.minis,.skills{grid-template-columns:1fr}
+  ol.sessions{columns:1}
+  .stat{padding:18px 20px}
+  .stat b{font-size:24px}
+  .edu{grid-template-columns:1fr;padding:24px}
+  .slides{grid-auto-columns:78%}
+  .contact{border-radius:20px;padding:32px 20px}
+  .more-head{flex-direction:column;align-items:flex-start;gap:6px}
+}
+</style>
 </head>
 <body>
 
-<div id="progress"></div>
-
-<!-- NAV -->
-<nav>
-  <a href="#hero" class="nav-logo">ahmed<span>.dev</span></a>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#certifications">Certifications</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <div class="nav-toggle" id="navToggle" onclick="toggleNav()">
-    <span></span><span></span><span></span>
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Ahmed Reda Alnajjar, home"><span class="mark">AR</span><span>Ahmed Reda Alnajjar</span></a>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="#experience">Experience</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#contact">Contact</a>
+      <a class="nav-cv" href="assets/cv/Ahmed_Reda_Alnajjar_CV_Full.pdf" download>Download CV ↓</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="assets/cv/Ahmed_Reda_Alnajjar_CV_Full.pdf" download>Download CV</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
   </div>
-</nav>
+</header>
+
+<main id="top">
 
 <!-- HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-content">
-    <div class="hero-badge">Available for full-time roles</div>
-    <h1>Ahmed Reda<br><span class="name-accent">Mohamed</span></h1>
-    <p class="hero-role"><strong>Full-Stack Web Developer</strong> &amp; <strong>AI / Machine Learning</strong></p>
-    <p class="hero-summary">
-      Computer Science graduate who builds full-stack web products end to end &mdash; most recently
-      <a href="#lokeify" style="color:var(--text);font-weight:700;text-decoration:none;border-bottom:1px solid var(--accent)">Lokeify</a>,
-      a multi-store e-commerce platform for fashion brands with a merchant dashboard, theme editor, storefronts and a 3D fit room.
-      ICPC participant who also builds end-to-end ML pipelines.
-    </p>
-    <div class="hero-cta">
-      <a href="#projects" class="btn btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        View Projects
-      </a>
-      <a href="Ahmed_Reda_Alnajjar_CV.pdf" download class="btn btn-outline">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download CV
-      </a>
-      <a href="#contact" class="btn btn-outline">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Get in Touch
-      </a>
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="status"><i></i>Open to AI instructor, automation and developer roles · Cairo, Giza or remote</span>
+        <h1>Ahmed Reda Alnajjar</h1>
+        <div class="role">AI Automation Instructor &amp; Full&#8209;Stack Developer</div>
+        <p class="summary">I teach AI and automation, and I build what I teach. At Zoomix I trained university professors and business owners to put AI to work with ChatGPT, Claude, Gemini, n8n, Make and Zapier, wrote the curricula other instructors taught from, and built the internal systems the team used every day. I also ship AI-powered web products with Next.js, React and LLM APIs.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="assets/cv/Ahmed_Reda_Alnajjar_CV_Full.pdf" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Download CV</a>
+          <a class="btn btn-ghost" href="#teaching">See my courses</a>
+          <a class="btn btn-ghost" href="#projects">View projects</a>
+        </div>
+        <div class="socials">
+          <a href="mailto:a7mdelnagar297@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>a7mdelnagar297@gmail.com</a>
+          <a href="https://linkedin.com/in/ahmedreda04" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg>LinkedIn</a>
+          <a href="https://github.com/ahmed-reda-elnajjar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.3-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></svg>GitHub</a>
+          <a href="tel:+201099119352"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>+20 10 9911 9352</a>
+        </div>
+      </div>
+      <div class="portrait">
+        <div class="avatar">
+          <span aria-hidden="true">AR</span>
+          <img src="assets/photo.webp" alt="Ahmed Reda Alnajjar" onerror="this.remove()">
+        </div>
+        <div class="float f1"><b>AI &amp; Automation</b><span class="muted">n8n · Make · Zapier · AI agents</span></div>
+        <div class="float f2"><b>Full-stack</b><span class="muted">Next.js · React · Node · Python</span></div>
+      </div>
     </div>
-    <div class="hero-links">
-      <a href="https://github.com/ahmed-reda-elnajjar" target="_blank" rel="noopener">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-        github.com/ahmed-reda-elnajjar
-      </a>
-      <a href="https://linkedin.com/in/ahmedreda04" target="_blank" rel="noopener">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        linkedin.com/in/ahmedreda04
-      </a>
-      <a href="mailto:ahmed.reda.alnajjar@gmail.com">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        ahmed.reda.alnajjar@gmail.com
-      </a>
+
+    <div class="stats reveal">
+      <div class="stat"><b>5</b><span>curricula written</span></div>
+      <div class="stat"><b>60+</b><span>sessions with labs &amp; projects</span></div>
+      <div class="stat"><b>13+</b><span>projects shipped</span></div>
+      <div class="stat"><b>Ages 6+</b><span>kids, teens, professors, business owners</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="bg-soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Experience</span>
+      <h2>Teaching AI and building the tools behind it</h2>
+    </div>
+    <div class="timeline">
+      <article class="job reveal">
+        <div class="when"><b>2026</b>7 months · Cairo, Egypt</div>
+        <div>
+          <h3>Technical Curriculum &amp; Internal Systems Lead (AI &amp; Automation)</h3>
+          <div class="org">Zoomix · ed-tech</div>
+          <ul>
+            <li>Taught AI-automation programs to university professors and business owners: ChatGPT, Claude and Gemini in daily work, prompt engineering, n8n, Make and Zapier automations, chatbots and AI agents.</li>
+            <li>Helped launch Zoomix's AI tracks (AI &amp; Automation, AI Programming) and wrote their course material, plus a 24-session full-stack web curriculum with a lab, a project and an assessment for every session.</li>
+            <li>Wrote course material for the Scratch (24 lectures), App Lab, AI Fundamentals and AI &amp; Automation tracks, and taught live programming and AI sessions to kids, teens and adult beginners.</li>
+            <li>Built LLM pipelines that generate course material and video scripts automatically, cutting production time per session.</li>
+            <li>Built internal systems the staff used daily: a real-time lecturer timetable and instructor management system, and a sales pipeline tool. Trained and mentored the instructor team through rehearsals and code reviews.</li>
+          </ul>
+          <div class="tags"><span class="tag">n8n</span><span class="tag">Make</span><span class="tag">Zapier</span><span class="tag">Prompt engineering</span><span class="tag">AI agents</span><span class="tag">Curriculum design</span><span class="tag">React</span><span class="tag">Firebase</span></div>
+        </div>
+      </article>
+      <article class="job reveal">
+        <div class="when"><b>2025</b>6 months · Online</div>
+        <div>
+          <h3>Coding Instructor</h3>
+          <div class="org">iSchool</div>
+          <ul>
+            <li>Taught live online coding and AI classes to students aged 6–18 across the Arab region: Scratch, Minecraft coding, HTML, CSS, JavaScript and AI fundamentals.</li>
+            <li>Taught AI fundamentals, algorithms and the software development life cycle to grades 4–6, mentoring students as they built games and projects in mBlock and PictoBlox.</li>
+          </ul>
+          <div class="tags"><span class="tag">Scratch</span><span class="tag">Minecraft coding</span><span class="tag">HTML / CSS / JS</span><span class="tag">mBlock</span><span class="tag">PictoBlox</span><span class="tag">AI fundamentals</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHING -->
+<section id="teaching">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Teaching portfolio</span>
+      <h2>Courses I designed and taught</h2>
+      <p class="lead">Full curricula for adults, teens and kids, each built around hands-on labs and projects. Click any slide to see it larger.</p>
+    </div>
+
+    <div class="courses">
+
+      <article class="course wide reveal">
+        <div class="slides">
+          <button data-full="assets/teaching/diploma-p2.webp" aria-label="Enlarge slide: Level 1, AI Fundamentals"><img src="assets/teaching/diploma-p2.webp" alt="AI & Automation Diploma, Level 1 topics" loading="lazy"></button>
+          <button data-full="assets/teaching/diploma-p4.webp" aria-label="Enlarge slide: Level 3, AI for Business"><img src="assets/teaching/diploma-p4.webp" alt="AI & Automation Diploma, Level 3 topics" loading="lazy"></button>
+          <button data-full="assets/teaching/claude-p1.webp" aria-label="Enlarge slide: Claude lecture cover"><img src="assets/teaching/claude-p1.webp" alt="Lecture cover: from Claude texts to visual production" loading="lazy"></button>
+          <button data-full="assets/teaching/claude-p3.webp" aria-label="Enlarge slide: Claude features"><img src="assets/teaching/claude-p3.webp" alt="Lecture slide on Claude features" loading="lazy"></button>
+          <button data-full="assets/teaching/identity-p3.webp" aria-label="Enlarge slide: AI for brand identity"><img src="assets/teaching/identity-p3.webp" alt="Lecture slide on AI for brand identity" loading="lazy"></button>
+        </div>
+        <div class="course-body">
+          <div class="course-meta"><span>Zoomix</span><span>Adults: university professors &amp; business owners</span><span>5 levels · 36 hours</span></div>
+          <h3>AI &amp; Automation Diploma</h3>
+          <p>From first prompts to automated business workflows. Learners use AI in their daily work, then connect tools into automations and AI agents with no-code platforms.</p>
+          <div class="levels">
+            <div class="level"><small>Level 1</small><b>AI Fundamentals</b><p>Types of AI, generative AI, prompt engineering basics, ethics, popular AI tools</p></div>
+            <div class="level"><small>Level 2</small><b>AI Productivity</b><p>Writing, presentations, research, email, translation, data analysis</p></div>
+            <div class="level"><small>Level 3</small><b>AI for Business</b><p>Marketing, customer service, chatbots, image, video and voice generation</p></div>
+            <div class="level"><small>Level 4</small><b>Automation Tools</b><p>Workflow and no-code automation, AI agents, connecting apps, forms and notifications</p></div>
+            <div class="level"><small>Level 5</small><b>Advanced AI</b><p>AI assistants for sales, HR, finance, education and project management</p></div>
+          </div>
+          <details>
+            <summary>Sample lectures</summary>
+            <ol class="sessions">
+              <li><b>01</b>AI Fundamentals: AI, ML &amp; deep learning, real-world applications, data privacy</li>
+              <li><b>02</b>Generative AI &amp; Ethics</li>
+              <li><b>03</b>Gemini &amp; NotebookLM for research and study</li>
+              <li><b>04</b>Claude and visual production tools: Artifacts, DALL·E, Sora, Luma, Suno (Arabic)</li>
+              <li><b>05</b>AI for brand identity and video: script, characters, scenes, voice-over, editing (Arabic)</li>
+              <li><b>06</b>Video automation systems with AI</li>
+            </ol>
+          </details>
+        </div>
+      </article>
+
+      <article class="course wide reveal">
+        <div class="slides">
+          <button data-full="assets/teaching/web01-p1.webp" aria-label="Enlarge slide: Session 1"><img src="assets/teaching/web01-p1.webp" alt="Session 1: Introduction to Web Development" loading="lazy"></button>
+          <button data-full="assets/teaching/web11-p1.webp" aria-label="Enlarge slide: Session 11"><img src="assets/teaching/web11-p1.webp" alt="Session 11: APIs and Asynchronous JavaScript" loading="lazy"></button>
+          <button data-full="assets/teaching/web15-p3.webp" aria-label="Enlarge slide: Session 15"><img src="assets/teaching/web15-p3.webp" alt="Session 15: REST APIs and CRUD, real-world hook" loading="lazy"></button>
+          <button data-full="assets/teaching/web19-p4.webp" aria-label="Enlarge slide: Session 19"><img src="assets/teaching/web19-p4.webp" alt="Session 19: hashing is not encryption" loading="lazy"></button>
+        </div>
+        <div class="course-body">
+          <div class="course-meta"><span>Zoomix</span><span>Beginners to junior developers</span><span>24 sessions · 24 projects</span></div>
+          <h3>Full-Stack Web Development</h3>
+          <p>A complete path from the first HTML page to a deployed full-stack app. Every session has learning objectives, a real-world hook, a guided lab, a project and an assessment, plus an instructor guide so other trainers can teach it.</p>
+          <div class="tags"><span class="tag">HTML &amp; CSS</span><span class="tag">Flexbox &amp; Grid</span><span class="tag">JavaScript</span><span class="tag">DOM &amp; APIs</span><span class="tag">Node.js &amp; Express</span><span class="tag">MongoDB &amp; Mongoose</span><span class="tag">Auth &amp; security</span><span class="tag">Testing &amp; deployment</span></div>
+          <details>
+            <summary>All 24 sessions</summary>
+            <ol class="sessions">
+              <li><b>01</b>Introduction to Web Development</li><li><b>02</b>HTML Fundamentals</li><li><b>03</b>Forms and Semantic HTML</li><li><b>04</b>CSS Fundamentals</li><li><b>05</b>CSS Layout and Flexbox</li><li><b>06</b>CSS Grid and Responsive Design</li><li><b>07</b>Modern UI with CSS</li><li><b>08</b>JavaScript Fundamentals</li><li><b>09</b>Functions and Arrays</li><li><b>10</b>DOM and Events</li><li><b>11</b>APIs and Async JavaScript</li><li><b>12</b>Frontend Final Project</li><li><b>13</b>Backend Fundamentals and Node.js</li><li><b>14</b>Express.js</li><li><b>15</b>REST APIs and CRUD</li><li><b>16</b>Databases and MongoDB</li><li><b>17</b>MongoDB with Mongoose</li><li><b>18</b>Professional Backend Architecture</li><li><b>19</b>Authentication</li><li><b>20</b>Authorization and Security</li><li><b>21</b>Connecting Frontend and Backend</li><li><b>22</b>Advanced API Features</li><li><b>23</b>Testing, Debugging and Deployment</li><li><b>24</b>Final Project and Demo Day</li>
+            </ol>
+          </details>
+        </div>
+      </article>
+
+      <article class="course reveal">
+        <div class="slides">
+          <button data-full="assets/teaching/scratch03-p1.webp" aria-label="Enlarge slide: Lecture 3"><img src="assets/teaching/scratch03-p1.webp" alt="Lecture 3: Animal Race Game and intro to control" loading="lazy"></button>
+          <button data-full="assets/teaching/scratch13-p1.webp" aria-label="Enlarge slide: Lecture 13"><img src="assets/teaching/scratch13-p1.webp" alt="Lecture 13: Say, Think and the Racing Car Game" loading="lazy"></button>
+          <button data-full="assets/teaching/scratch03-p2.webp" aria-label="Enlarge slide: what makes a race game"><img src="assets/teaching/scratch03-p2.webp" alt="Lecture slide: what makes a race game" loading="lazy"></button>
+        </div>
+        <div class="course-body">
+          <div class="course-meta"><span>Zoomix</span><span>Young learners</span><span>24 lectures · 4 quizzes</span></div>
+          <h3>Scratch Curriculum: ScratchJr to MIT Scratch</h3>
+          <p>Game-based lessons that grow from moving a character to full games with events, loops, conditionals and broadcasts, with a self-made final project.</p>
+          <details>
+            <summary>All 24 lectures</summary>
+            <ol class="sessions">
+              <li><b>01</b>Meet ScratchJr: Make Things Move</li><li><b>02</b>Design &amp; Speed Up Your Character</li><li><b>03</b>Animal Race Game &amp; Intro to Control</li><li><b>04</b>Hide &amp; Seek and a Dance Party</li><li><b>05</b>Four Seasons &amp; the Magic Flower</li><li><b>06</b>Continuous Stories &amp; Dodge Ball</li><li><b>07</b>Animate Your Name &amp; Pick the Flower</li><li><b>08</b>Birthday Surprise &amp; Maze Game</li><li><b>09</b>Quiz 1 · Welcome to MIT Scratch</li><li><b>10</b>Sequences with the Motion Block</li><li><b>11</b>Jump, Fly &amp; Musical Instruments</li><li><b>12</b>Costume Tags &amp; More Motion Projects</li><li><b>13</b>Say, Think &amp; the Racing Car Game</li><li><b>14</b>Looks Fluency &amp; Collect the Garbage</li><li><b>15</b>Dancing Sprites Assessment Project</li><li><b>16</b>Sound Effects for the Racing Car Game</li><li><b>17</b>Musical Group Project &amp; Quiz 2</li><li><b>18</b>Control Fluency &amp; Events</li><li><b>19</b>Conditionals, Operators &amp; Broadcasts</li><li><b>20</b>Geometry with Control &amp; Parallelism</li><li><b>21</b>Quiz 3 · Loop-Powered Puzzle</li><li><b>22</b>General Control Block Fluency</li><li><b>23</b>Full Games: Cat Chasing Mouse</li><li><b>24</b>Quiz 4 · Self-Made Project</li>
+            </ol>
+          </details>
+        </div>
+      </article>
+
+      <article class="course reveal">
+        <div class="slides">
+          <button data-full="assets/teaching/applab08-p1.webp" aria-label="Enlarge slide: Session 8"><img src="assets/teaching/applab08-p1.webp" alt="Session 8: Crash! Bang! Score! Sprite collisions" loading="lazy"></button>
+          <button data-full="assets/teaching/applab08-p4.webp" aria-label="Enlarge slide: what is a collision"><img src="assets/teaching/applab08-p4.webp" alt="Lesson slide: what is a collision" loading="lazy"></button>
+          <button data-full="assets/teaching/applab-p4.webp" aria-label="Enlarge slide: UI design"><img src="assets/teaching/applab-p4.webp" alt="App Lab session on UI design" loading="lazy"></button>
+        </div>
+        <div class="course-body">
+          <div class="course-meta"><span>Zoomix</span><span>Kids</span><span>12 sessions</span></div>
+          <h3>App Lab for Kids</h3>
+          <p>Kids design real app screens and code games step by step, ending with a project showcase.</p>
+          <div class="tags"><span class="tag">UI design</span><span class="tag">Events</span><span class="tag">Loops &amp; nested loops</span><span class="tag">Conditionals</span><span class="tag">Variables</span><span class="tag">Sprite collisions</span><span class="tag">Digital safety</span><span class="tag">Final game</span></div>
+        </div>
+      </article>
+
+      <article class="course wide split reveal">
+        <div class="slides">
+          <button data-full="assets/teaching/aiprog-p1.webp" aria-label="Enlarge slide: AI and Programming Diploma"><img src="assets/teaching/aiprog-p1.webp" alt="AI and Programming Diploma cover (Arabic)" loading="lazy"></button>
+        </div>
+        <div class="course-body">
+          <div class="course-meta"><span>Zoomix</span><span>Grade 11 students</span><span>4 levels · 6 weeks · 2 × 2-hour sessions a week</span></div>
+          <h3>AI &amp; Programming Diploma</h3>
+          <p>A school-term track that connects AI with how the web works: how AI works and its ethics, cybersecurity basics, web application architecture, and web design and user experience.</p>
+          <div class="tags"><span class="tag">IT &amp; society</span><span class="tag">How AI works</span><span class="tag">AI ethics</span><span class="tag">Encryption &amp; network security</span><span class="tag">Web architecture</span><span class="tag">Front-end basics</span><span class="tag">UX &amp; web design</span></div>
+        </div>
+      </article>
+
+    </div>
+    <p class="note reveal">Slides shown as previews. The full course material was produced for Zoomix and stays with the academy.</p>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="bg-soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Projects</span>
+      <h2>Products I built and shipped</h2>
+      <p class="lead">Live products with real users in mind, from AI e-commerce platforms to the systems I built for my own team.</p>
+    </div>
+
+    <div class="featured">
+      <article class="proj reveal">
+        <div class="shot"><img src="assets/projects/al3ataba.webp" alt="Al3ataba Online home page" loading="lazy"></div>
+        <div class="proj-body">
+          <div class="proj-top"><h3>Al3ataba Online</h3><span class="year">2026</span></div>
+          <div class="sub">Wholesale &amp; retail marketplace for Cairo's Ataba market</div>
+          <p>I went to the Ataba market myself, met suppliers and compared prices before listing products. The site has quantity-based wholesale pricing, supplier stock, a request-for-quotation flow, a reseller program and an admin dashboard, plus AI tools that write product copy from real data, read specs from photos and clean product images. Built in about two weeks.</p>
+          <div class="tags"><span class="tag">Next.js 15</span><span class="tag">TypeScript</span><span class="tag">Firebase</span><span class="tag">Supabase</span><span class="tag">Gemini · Groq · Claude</span></div>
+          <div class="links"><a class="live" href="https://al3ataba.vercel.app" target="_blank" rel="noopener">Live site ↗</a><a href="https://github.com/ahmed-reda-elnajjar/al3ataba" target="_blank" rel="noopener">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="proj reveal">
+        <div class="shot"><img src="assets/projects/lokeify.webp" alt="Lokeify landing page with a 3D fit room" loading="lazy"></div>
+        <div class="proj-body">
+          <div class="proj-top"><h3>Lokeify</h3><span class="year">2026</span></div>
+          <div class="sub">Multi-store e-commerce platform for fashion brands</div>
+          <p>Merchants open a store and get their own live storefront from one codebase, with every query scoped to its shop. Theme and sections editor with draft and publish, products, orders, customers, checkout, a 3D fit room, size advice and AI photo try-on with encrypted per-store API keys.</p>
+          <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Three.js</span><span class="tag">Zustand</span><span class="tag">SQLite / Turso</span></div>
+          <div class="links"><a class="live" href="https://lokeify.vercel.app" target="_blank" rel="noopener">Live site ↗</a><a href="https://github.com/ahmed-reda-elnajjar/lokeify" target="_blank" rel="noopener">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="proj reveal">
+        <div class="shot"><img src="assets/projects/crate.webp" alt="CRATE streetwear storefront" loading="lazy"></div>
+        <div class="proj-body">
+          <div class="proj-top"><h3>CRATE Store</h3><span class="year">2026</span></div>
+          <div class="sub">Streetwear brand storefront</div>
+          <p>Built from a design handoff: timed drops with countdowns, shop, product pages, lookbook, search, bag, checkout, customer accounts and an admin area. It is also the live demo store inside Lokeify.</p>
+          <div class="tags"><span class="tag">Next.js</span><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Three.js</span></div>
+          <div class="links"><a class="live" href="https://crate-store.vercel.app" target="_blank" rel="noopener">Live site ↗</a><a href="https://github.com/ahmed-reda-elnajjar/crate-store" target="_blank" rel="noopener">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="proj reveal">
+        <div class="shot"><img src="assets/projects/marketscan.webp" alt="MarketScan Pro shopper dashboard" loading="lazy"></div>
+        <div class="proj-body">
+          <div class="proj-top"><h3>MarketScan Pro</h3><span class="year">2025</span></div>
+          <div class="sub">Smart supermarket system · graduation project</div>
+          <p>Shopper, employee and admin interfaces: voice product search, a smart cart that tracks budget and suggests cheaper alternatives, shortest-path routing on an SVG store map, task assignment and a high-traffic heatmap, plus a React Native mobile app.</p>
+          <div class="tags"><span class="tag">React</span><span class="tag">Tailwind CSS</span><span class="tag">Web Speech API</span><span class="tag">React Native (Expo)</span></div>
+          <div class="links"><a class="live" href="https://marketscan-pro.vercel.app" target="_blank" rel="noopener">Live site ↗</a><a href="https://marketscan-mobile.vercel.app" target="_blank" rel="noopener">Mobile demo</a><a href="https://github.com/ahmed-reda-elnajjar/MarketScan-Web" target="_blank" rel="noopener">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="proj reveal">
+        <div class="shot"><img src="assets/projects/zoomix-lec.webp" alt="Zoomix lecturer timetable (Arabic)" loading="lazy"></div>
+        <div class="proj-body">
+          <div class="proj-top"><h3>Zoomix Lecturer Timetable</h3><span class="year">2026</span></div>
+          <div class="sub">Instructor scheduling system used by Zoomix staff</div>
+          <p>Weekly lecture timetable with live status for each instructor, real-time sync and adding or removing sessions, in an Arabic right-to-left interface.</p>
+          <div class="tags"><span class="tag">React</span><span class="tag">Vite</span><span class="tag">Firestore (real-time)</span><span class="tag">Framer Motion</span></div>
+          <div class="links"><a class="live" href="https://zoomix-lec.vercel.app" target="_blank" rel="noopener">Live site ↗</a><a href="https://github.com/ahmed-reda-elnajjar/zoomix-LEC" target="_blank" rel="noopener">GitHub</a></div>
+        </div>
+      </article>
+
+      <article class="proj reveal">
+        <div class="shot"><img src="assets/projects/savetime.webp" alt="Save Time English course platform" loading="lazy"></div>
+        <div class="proj-body">
+          <div class="proj-top"><h3>Save Time</h3><span class="year">2026</span></div>
+          <div class="sub">English course platform</div>
+          <p>Course site with course details, testimonials, sign-in, a student dashboard and an admin area, backed by an Express REST API for auth, courses, enrollments, contacts and videos.</p>
+          <div class="tags"><span class="tag">JavaScript</span><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">SQLite</span></div>
+          <div class="links"><a class="live" href="https://savetime-english.vercel.app" target="_blank" rel="noopener">Live site ↗</a><a href="https://github.com/ahmed-reda-elnajjar/savetime_english_course-" target="_blank" rel="noopener">GitHub</a></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="more-head reveal"><h3>More projects</h3><span class="muted">AI, machine learning and more</span></div>
+    <div class="minis">
+      <article class="mini reveal">
+        <h4>Callify</h4><div class="sub">AI English speaking assessment</div>
+        <p>Scores recorded answers with Azure Speech at phoneme level, grades grammar and vocabulary with an LLM and maps results to a CEFR level (A1–C1).</p>
+        <div class="tags"><span class="tag">Azure Speech</span><span class="tag">Groq</span><span class="tag">React</span></div>
+        <div class="links"><a href="https://github.com/ahmed-reda-elnajjar/callify" target="_blank" rel="noopener">GitHub</a></div>
+      </article>
+      <article class="mini reveal">
+        <h4>English Assessment Engines</h4><div class="sub">Same AI assessment, three back ends</div>
+        <p>Built in FastAPI, Express and Flask to compare Azure, Google and Deepgram speech-to-text with Claude, GPT and Groq feedback.</p>
+        <div class="tags"><span class="tag">FastAPI</span><span class="tag">Express</span><span class="tag">Flask</span><span class="tag">ffmpeg</span></div>
+        <div class="links"><a href="https://github.com/ahmed-reda-elnajjar/english-assessment" target="_blank" rel="noopener">FastAPI</a><a href="https://github.com/ahmed-reda-elnajjar/english-evaluator" target="_blank" rel="noopener">Express</a><a href="https://github.com/ahmed-reda-elnajjar/ai-english-assessment" target="_blank" rel="noopener">Flask</a></div>
+      </article>
+      <article class="mini reveal">
+        <h4>Peaky Scouts &amp; GTX</h4><div class="sub">Call-center recruitment platforms</div>
+        <p>Real-time job listings, applications with voice-recording screening and CV upload, recruiter forms and admin dashboards. GTX adds Gemini and English-course pages.</p>
+        <div class="tags"><span class="tag">React</span><span class="tag">Firebase</span><span class="tag">Gemini API</span></div>
+        <div class="links"><a class="live" href="https://peaky-scouts.vercel.app" target="_blank" rel="noopener">Peaky Scouts ↗</a><a href="https://gtx-rho.vercel.app" target="_blank" rel="noopener">GTX ↗</a><a href="https://github.com/ahmed-reda-elnajjar/Egypt_Hire" target="_blank" rel="noopener">GitHub</a></div>
+      </article>
+      <article class="mini reveal">
+        <h4>AI-Based Text Classifier</h4><div class="sub">End-to-end ML pipeline</div>
+        <p>Cleaning, TF-IDF features, training and evaluation. Benchmarked five classifiers on imbalanced text using precision, recall and F1.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Pandas</span></div>
+      </article>
+      <article class="mini reveal">
+        <h4>Bubble Pop</h4><div class="sub">Hand-controlled webcam game</div>
+        <p>Tracks the player's hand from live webcam frames to steer a cursor and pop bubbles. Built as a teaching demo for kids.</p>
+        <div class="tags"><span class="tag">JavaScript</span><span class="tag">Canvas</span><span class="tag">getUserMedia</span></div>
+        <div class="links"><a class="live" href="https://bubble-pop-game-zeta.vercel.app" target="_blank" rel="noopener">Play ↗</a><a href="https://github.com/ahmed-reda-elnajjar/bubble-pop-game" target="_blank" rel="noopener">GitHub</a></div>
+      </article>
+      <article class="mini reveal">
+        <h4>Connect Four AI Agents</h4><div class="sub">Python</div>
+        <p>Connect Four engine with win and draw detection and a pluggable Agent class so different AI strategies can play each other.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">OOP</span></div>
+        <div class="links"><a href="https://github.com/ahmed-reda-elnajjar/connect-four-ai" target="_blank" rel="noopener">GitHub</a></div>
+      </article>
+      <article class="mini reveal">
+        <h4>DEPI Front-End Projects</h4><div class="sub">Negroo Move, Trafalgar, Lookscout and more</div>
+        <p>Responsive sites from the DEPI React Frontend track, including a movie platform with sign-up and favorites and a healthcare landing page.</p>
+        <div class="tags"><span class="tag">HTML</span><span class="tag">Sass</span><span class="tag">Bootstrap</span><span class="tag">JavaScript</span></div>
+        <div class="links"><a class="live" href="https://depi-web-projects.vercel.app" target="_blank" rel="noopener">Live ↗</a><a href="https://github.com/ahmed-reda-elnajjar/depi-web-projects" target="_blank" rel="noopener">GitHub</a></div>
+      </article>
+      <article class="mini reveal">
+        <h4>Java Swing Desktop Apps</h4><div class="sub">Registration wizard &amp; drawing app</div>
+        <p>A multi-screen registration wizard with an interface-based controller, and a drawing tool with shape classes and freehand strokes.</p>
+        <div class="tags"><span class="tag">Java</span><span class="tag">Swing</span><span class="tag">OOP</span></div>
+        <div class="links"><a href="https://github.com/ahmed-reda-elnajjar/java-swing-projects" target="_blank" rel="noopener">GitHub</a></div>
+      </article>
+      <article class="mini reveal">
+        <h4>All repositories</h4><div class="sub">GitHub</div>
+        <p>Source code for these projects and more, including course projects and experiments.</p>
+        <div class="links"><a class="live" href="https://github.com/ahmed-reda-elnajjar" target="_blank" rel="noopener">github.com/ahmed-reda-elnajjar ↗</a></div>
+      </article>
     </div>
   </div>
 </section>
 
 <!-- SKILLS -->
 <section id="skills">
-  <div class="container">
-    <p class="section-label fade-up">// technical skills</p>
-    <h2 class="fade-up">What I Work With</h2>
-    <div class="section-divider fade-up"></div>
-    <div class="skills-grid">
-
-      <div class="skill-card fade-up">
-        <div class="skill-card-header">
-          <div class="skill-icon">🤖</div>
-          <h3>AI / Machine Learning</h3>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Python</span>
-          <span class="tag">Scikit-learn</span>
-          <span class="tag">TF-IDF</span>
-          <span class="tag">Classification</span>
-          <span class="tag">Feature Engineering</span>
-          <span class="tag">Model Evaluation</span>
-          <span class="tag">Data Preprocessing</span>
-          <span class="tag">Pandas</span>
-          <span class="tag">NumPy</span>
-        </div>
-      </div>
-
-      <div class="skill-card fade-up">
-        <div class="skill-card-header">
-          <div class="skill-icon">⚛️</div>
-          <h3>Frontend Development</h3>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">React.js</span>
-          <span class="tag">Next.js</span>
-          <span class="tag">JavaScript (ES6+)</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">Tailwind CSS</span>
-          <span class="tag">HTML5</span>
-          <span class="tag">CSS3</span>
-          <span class="tag">Sass</span>
-          <span class="tag">Vite</span>
-          <span class="tag">Zustand</span>
-          <span class="tag">Three.js / R3F</span>
-          <span class="tag">Responsive UI</span>
-        </div>
-      </div>
-
-      <div class="skill-card fade-up">
-        <div class="skill-card-header">
-          <div class="skill-icon">☁️</div>
-          <h3>Backend &amp; Cloud</h3>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Node.js</span>
-          <span class="tag">Express</span>
-          <span class="tag">Next.js API Routes</span>
-          <span class="tag">MongoDB</span>
-          <span class="tag">SQLite / Turso</span>
-          <span class="tag">Session Auth</span>
-          <span class="tag">Firebase</span>
-          <span class="tag">Firestore</span>
-          <span class="tag">Firebase Auth</span>
-          <span class="tag">Cloudinary</span>
-          <span class="tag">REST APIs</span>
-          <span class="tag">Vercel</span>
-          <span class="tag">SQL</span>
-        </div>
-      </div>
-
-      <div class="skill-card fade-up">
-        <div class="skill-card-header">
-          <div class="skill-icon">🛠️</div>
-          <h3>Languages &amp; Tooling</h3>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Python</span>
-          <span class="tag">JavaScript</span>
-          <span class="tag">Java</span>
-          <span class="tag">SQL</span>
-          <span class="tag">Git</span>
-          <span class="tag">GitHub</span>
-          <span class="tag">Google Colab</span>
-          <span class="tag">VS Code</span>
-        </div>
-      </div>
-
-      <div class="skill-card fade-up">
-        <div class="skill-card-header">
-          <div class="skill-icon">💬</div>
-          <h3>Languages &amp; Soft Skills</h3>
-        </div>
-        <div class="skill-tags">
-          <span class="tag">Arabic — Native</span>
-          <span class="tag">English — Fluent</span>
-          <span class="tag">Communication</span>
-          <span class="tag">Teamwork</span>
-          <span class="tag">Problem Solving</span>
-          <span class="tag">Adaptability</span>
-        </div>
-      </div>
-
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Skills</span>
+      <h2>What I work with</h2>
+    </div>
+    <div class="skills">
+      <div class="skill reveal"><h3><i>✦</i>AI &amp; LLMs</h3><div class="tags"><span class="tag">ChatGPT</span><span class="tag">Claude</span><span class="tag">Gemini</span><span class="tag">OpenAI · Claude · Gemini · Groq APIs</span><span class="tag">Prompt engineering</span><span class="tag">AI chatbots &amp; agents</span><span class="tag">Azure Speech</span><span class="tag">Google STT</span><span class="tag">Deepgram</span></div></div>
+      <div class="skill reveal"><h3><i>⚡</i>Automation</h3><div class="tags"><span class="tag">n8n</span><span class="tag">Make</span><span class="tag">Zapier</span><span class="tag">Workflow design</span><span class="tag">LLM content pipelines</span><span class="tag">Webhooks &amp; APIs</span></div></div>
+      <div class="skill reveal"><h3><i>🎓</i>Teaching</h3><div class="tags"><span class="tag">Live online &amp; on-site sessions</span><span class="tag">Curriculum &amp; lab design</span><span class="tag">Assessments</span><span class="tag">Instructor mentoring</span><span class="tag">Scratch &amp; ScratchJr</span><span class="tag">App Lab</span><span class="tag">mBlock · PictoBlox</span></div></div>
+      <div class="skill reveal"><h3><i>◧</i>Frontend &amp; Mobile</h3><div class="tags"><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">Tailwind CSS</span><span class="tag">Sass</span><span class="tag">Framer Motion</span><span class="tag">Three.js / R3F</span><span class="tag">React Native (Expo)</span></div></div>
+      <div class="skill reveal"><h3><i>⌘</i>Backend &amp; Data</h3><div class="tags"><span class="tag">Node.js · Express</span><span class="tag">Python · FastAPI · Flask</span><span class="tag">REST APIs</span><span class="tag">Firebase</span><span class="tag">Supabase</span><span class="tag">MongoDB</span><span class="tag">SQLite / Turso</span><span class="tag">SQL</span></div></div>
+      <div class="skill reveal"><h3><i>∑</i>ML &amp; Tools</h3><div class="tags"><span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Jupyter · Colab</span><span class="tag">Git &amp; GitHub</span><span class="tag">Vercel</span><span class="tag">Postman</span><span class="tag">Java</span></div></div>
     </div>
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="container">
-    <p class="section-label fade-up">// selected work</p>
-    <h2 class="fade-up">Projects</h2>
-    <div class="section-divider fade-up"></div>
-    <div class="projects-grid">
-
-      <!-- Lokeify (featured) -->
-      <div class="project-card featured fade-up" id="lokeify">
-        <div class="project-header">
-          <h3>Lokeify <span class="project-sub">Multi-store e-commerce platform for fashion brands</span></h3>
-          <span class="project-badge badge-feat">Featured &middot; 2026</span>
-        </div>
-        <p>
-          A Shopify-style platform: merchants sign up, open a store and run it from their own admin, and every store gets a
-          live storefront with a 3D fit room and size advice built in.
-        </p>
-        <ul class="project-points">
-          <li><strong>Merchant admin</strong> &mdash; sales &amp; orders KPIs with a 30-day revenue chart, product editor (photos, colorways, sizes, stock), orders, customers and newsletter sign-ups.</li>
-          <li><strong>Theme editor</strong> &mdash; draft &rarr; publish flow with reorderable home-page sections, hero banner, drop countdown and trending products.</li>
-          <li><strong>Storefront &amp; checkout</strong> &mdash; collections, search, product pages, lookbook, bag and customer accounts; the server prices the bag and deducts stock.</li>
-          <li><strong>Fit tech</strong> &mdash; 3D fit room (Three.js / React Three Fiber) with male and female avatars, a size-recommendation engine and AI photo try-on through swappable providers.</li>
-          <li><strong>Built for serverless</strong> &mdash; every query scoped per shop, signed http-only cookie sessions, scrypt passwords, SQLite / Turso and chunked uploads on Vercel.</li>
-        </ul>
-        <div class="demo-login">Try the merchant admin: <code>demo@lokeify.com</code> / <code>demo1234</code></div>
-        <div class="project-tech">
-          <span class="tech-tag">Next.js</span>
-          <span class="tech-tag">React</span>
-          <span class="tech-tag">TypeScript</span>
-          <span class="tech-tag">Tailwind CSS</span>
-          <span class="tech-tag">Three.js</span>
-          <span class="tech-tag">React Three Fiber</span>
-          <span class="tech-tag">Zustand</span>
-          <span class="tech-tag">SQLite / Turso</span>
-          <span class="tech-tag">Vercel</span>
-        </div>
-        <div class="project-links">
-          <a href="https://lokeify.vercel.app" target="_blank" rel="noopener" class="project-link primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Live Demo
-          </a>
-          <a href="https://lokeify.vercel.app/s/crate" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Demo Store
-          </a>
-          <a href="https://lokeify.vercel.app/login" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Merchant Admin
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/lokeify" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- CRATE Store -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>CRATE Store</h3>
-          <span class="project-badge badge-full">E-commerce · 2026</span>
-        </div>
-        <p>
-          Storefront for the CRATE streetwear brand built from a design handoff: timed drops with countdowns, shop, product pages, lookbook, search, bag, checkout, customer accounts and an admin area. It is also the live demo store inside Lokeify.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">Next.js</span>
-          <span class="tech-tag">React</span>
-          <span class="tech-tag">TypeScript</span>
-          <span class="tech-tag">Three.js</span>
-          <span class="tech-tag">Vercel</span>
-        </div>
-        <div class="project-links">
-          <a href="https://crate-store.vercel.app" target="_blank" rel="noopener" class="project-link primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Live Demo
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/crate-store" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- MarketScan Pro -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>MarketScan Pro</h3>
-          <span class="project-badge badge-grad">Graduation Project</span>
-        </div>
-        <p>
-          Smart Supermarket Management Dashboard with three role-based interfaces (Shopper, Employee, Admin).
-          Features an interactive SVG store map with a multi-stop shortest-path routing algorithm, voice-activated
-          product search via Web Speech API, a Smart Cart that tracks budgets in real time and auto-suggests
-          cheaper alternatives, and a live heatmap of high-traffic zones.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">React.js</span>
-          <span class="tech-tag">Vite</span>
-          <span class="tech-tag">Tailwind CSS</span>
-          <span class="tech-tag">Web Speech API</span>
-          <span class="tech-tag">SVG Animations</span>
-          <span class="tech-tag">JavaScript ES6+</span>
-        </div>
-        <div class="project-links">
-          <a href="https://marketscan-pro.vercel.app" target="_blank" rel="noopener" class="project-link primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Live Demo
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/MarketScan-Web" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-
-          <a href="https://github.com/ahmed-reda-elnajjar/marketscan-shopper-app" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            Mobile App
-          </a>
-          <a href="https://marketscan-mobile.vercel.app" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Mobile Demo
-          </a>
-        </div>
-      </div>
-
-      <!-- Peaky Scouts -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>Peaky Scouts</h3>
-          <span class="project-badge badge-full">Full-Stack</span>
-        </div>
-        <p>
-          Call Center Recruitment Platform connecting agents and employers through a streamlined application workflow.
-          Includes Firebase Auth &amp; Firestore for secure real-time data, an Admin Dashboard for job and candidate
-          management, voice-recording for applicant screening, CV uploads via Cloudinary, and continuous deployments
-          through Vercel.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">React.js</span>
-          <span class="tech-tag">Tailwind CSS</span>
-          <span class="tech-tag">Firebase</span>
-          <span class="tech-tag">Firestore</span>
-          <span class="tech-tag">Cloudinary</span>
-          <span class="tech-tag">Vercel</span>
-        </div>
-        <div class="project-links">
-          <a href="https://peaky-scouts.vercel.app" target="_blank" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Live Demo
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/Egypt_Hire" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- GTX -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>GTX</h3>
-          <span class="project-badge badge-full">Full-Stack · 2026</span>
-        </div>
-        <p>
-          Call-center jobs agency platform: job listings and details, application flow, recommended jobs, recruiter form, user profiles and an admin dashboard, plus English-course pages (Career Sprint) for applicants.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">React.js</span>
-          <span class="tech-tag">Firebase</span>
-          <span class="tech-tag">Framer Motion</span>
-          <span class="tech-tag">Three.js</span>
-          <span class="tech-tag">Gemini API</span>
-          <span class="tech-tag">Vercel</span>
-        </div>
-        <div class="project-links">
-          <a href="https://gtx-rho.vercel.app" target="_blank" rel="noopener" class="project-link primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Live Demo
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/GTX" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- Callify -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>Callify</h3>
-          <span class="project-badge badge-ml">AI · Speech</span>
-        </div>
-        <p>
-          AI English speaking assessment for call-center applicants: phoneme-level pronunciation, fluency and completeness scores from Azure Speech, grammar and vocabulary analysis by an LLM, mapped to a CEFR level (A1&ndash;C1) with strict thresholds.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">React.js</span>
-          <span class="tech-tag">Azure Speech SDK</span>
-          <span class="tech-tag">Groq LLM</span>
-          <span class="tech-tag">Firebase</span>
-          <span class="tech-tag">Cloudinary</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/ahmed-reda-elnajjar/callify" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- English Assessment Engines -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>English Assessment Engines</h3>
-          <span class="project-badge badge-ml">AI · Back End</span>
-        </div>
-        <p>
-          The same CEFR speaking assessment built three ways to compare stacks and providers: recording/upload &rarr; audio conversion (ffmpeg) &rarr; speech scoring (Azure, Google STT, Deepgram) &rarr; LLM grammar and vocabulary feedback (Claude, GPT, Groq).
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">FastAPI</span>
-          <span class="tech-tag">Express</span>
-          <span class="tech-tag">Flask</span>
-          <span class="tech-tag">Azure Speech</span>
-          <span class="tech-tag">LLM APIs</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/ahmed-reda-elnajjar/english-assessment" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            FastAPI
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/english-evaluator" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            Express
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/ai-english-assessment" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            Flask
-          </a>
-        </div>
-      </div>
-
-      <!-- Zoomix Lecturer Timetable -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>Zoomix Lecturer Timetable</h3>
-          <span class="project-badge badge-full">Internal Tool</span>
-        </div>
-        <p>
-          Weekly lecture timetable used by Zoomix staff: live status per instructor, real-time Firestore sync and add/remove sessions, with an Arabic RTL interface.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">React</span>
-          <span class="tech-tag">Vite</span>
-          <span class="tech-tag">Tailwind CSS</span>
-          <span class="tech-tag">Firestore</span>
-          <span class="tech-tag">Framer Motion</span>
-        </div>
-        <div class="project-links">
-          <a href="https://zoomix-lec.vercel.app" target="_blank" rel="noopener" class="project-link primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Live Demo
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/zoomix-LEC" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- Save Time -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>Save Time</h3>
-          <span class="project-badge badge-full">Full-Stack</span>
-        </div>
-        <p>
-          English course platform with course details, testimonials, auth, a student dashboard and admin pages, backed by an Express REST API (auth, courses, enrollments, contacts, videos) on SQLite.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">HTML</span>
-          <span class="tech-tag">CSS</span>
-          <span class="tech-tag">JavaScript</span>
-          <span class="tech-tag">Node.js</span>
-          <span class="tech-tag">Express</span>
-          <span class="tech-tag">SQLite</span>
-        </div>
-        <div class="project-links">
-          <a href="https://savetime-english.vercel.app" target="_blank" rel="noopener" class="project-link primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Live Demo
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/savetime_english_course-" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- AI Text Classifier -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>AI-Based Text Classifier</h3>
-          <span class="project-badge badge-ml">ML Pipeline</span>
-        </div>
-        <p>
-          End-to-end machine learning pipeline covering data preprocessing, TF-IDF feature extraction, model
-          training, and performance evaluation. Benchmarked multiple classification algorithms and tuned
-          hyperparameters to improve accuracy on imbalanced text data. Fully documented in Google Colab
-          for reproducibility.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">Scikit-learn</span>
-          <span class="tech-tag">Pandas</span>
-          <span class="tech-tag">NumPy</span>
-          <span class="tech-tag">TF-IDF</span>
-          <span class="tech-tag">Google Colab</span>
-        </div>
-        <div class="project-links">
-        </div>
-      </div>
-
-      <!-- Negroo Move -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>Negroo Move</h3>
-          <span class="project-badge badge-fe">Frontend</span>
-        </div>
-        <p>
-          Interactive, fully responsive frontend web experience focused on clean UI and smooth intentional
-          interactions across devices. Optimized rendering performance and asset loading for fast first-paint.
-          Maintained a modular, scalable Sass architecture for maintainability and rapid feature extension.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">HTML5</span>
-          <span class="tech-tag">CSS3</span>
-          <span class="tech-tag">JavaScript</span>
-          <span class="tech-tag">Sass</span>
-        </div>
-        <div class="project-links">
-          <a href="https://negroo-move.vercel.app" target="_blank" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Live Demo
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/Negroomove" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- Bubble Pop -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>Bubble Pop</h3>
-          <span class="project-badge badge-fe">Game</span>
-        </div>
-        <p>
-          Hand-controlled browser game: the webcam tracks the player&rsquo;s hand (with smoothing and adjustable sensitivity) to steer a cursor and pop bubbles. Built as a teaching demo for kids.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">JavaScript</span>
-          <span class="tech-tag">Canvas API</span>
-          <span class="tech-tag">getUserMedia</span>
-        </div>
-        <div class="project-links">
-          <a href="https://bubble-pop-game-zeta.vercel.app" target="_blank" rel="noopener" class="project-link primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Play
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/bubble-pop-game" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- DEPI Web Projects -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>DEPI Web Projects</h3>
-          <span class="project-badge badge-fe">Frontend · 2024</span>
-        </div>
-        <p>
-          Responsive sites from the DEPI React Frontend track: Trafalgar (healthcare landing page), Lookscout, Connect Four, a to-do list, a sign-up form and more, collected on one page.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">HTML5</span>
-          <span class="tech-tag">CSS3</span>
-          <span class="tech-tag">Bootstrap</span>
-          <span class="tech-tag">JavaScript</span>
-        </div>
-        <div class="project-links">
-          <a href="https://depi-web-projects.vercel.app" target="_blank" rel="noopener" class="project-link primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Live Demo
-          </a>
-          <a href="https://github.com/ahmed-reda-elnajjar/depi-web-projects" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- Connect Four AI -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>Connect Four AI Agents</h3>
-          <span class="project-badge badge-ml">Python</span>
-        </div>
-        <p>
-          Connect Four engine with win and draw detection and a pluggable Agent class, so different AI strategies can play each other.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">OOP</span>
-          <span class="tech-tag">Jupyter / Colab</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/ahmed-reda-elnajjar/connect-four-ai" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- Java Drawing App -->
-      <div class="project-card fade-up">
-        <div class="project-header">
-          <h3>Java Swing Desktop Apps</h3>
-          <span class="project-badge badge-fe">Desktop</span>
-        </div>
-        <p>
-          A Student Registration wizard (interface-based controller, abstract panels, CardLayout) and a drawing tool with
-          shape primitives, color selection and freehand strokes. Applied OOP design principles — inheritance, encapsulation, and polymorphism —
-          alongside Swing event-handling patterns for a responsive UI.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">Java</span>
-          <span class="tech-tag">Swing</span>
-          <span class="tech-tag">OOP</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/ahmed-reda-elnajjar/java-swing-projects" target="_blank" rel="noopener" class="project-link">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
+<!-- CERTIFICATIONS & EDUCATION -->
+<section id="certifications" class="bg-soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Learning</span>
+      <h2>Certifications &amp; education</h2>
     </div>
-  </div>
-</section>
-
-<!-- CERTIFICATIONS -->
-<section id="certifications">
-  <div class="container">
-    <p class="section-label fade-up">// credentials</p>
-    <h2 class="fade-up">Certifications</h2>
-    <div class="section-divider fade-up"></div>
-    <div class="certs-grid">
-
-      <div class="cert-card fade-up">
-        <div class="cert-icon purple">🎓</div>
-        <div class="cert-body">
-          <h3>React Frontend Web Developer</h3>
-          <div class="cert-issuer">Digital Egypt Pioneers Initiative (DEPI)</div>
-          <div class="cert-date">Apr 2024 – Oct 2024 · Ministry of Communications &amp; IT, Egypt</div>
-        </div>
-      </div>
-
-
-      <div class="cert-card fade-up">
-        <div class="cert-icon blue">💬</div>
-        <div class="cert-body">
-          <h3>Business English Track</h3>
-          <div class="cert-issuer">DEPI &amp; Berlitz Egypt</div>
-          <div class="cert-date">Apr – Oct 2024 · Ministry of Communications &amp; IT, Egypt</div>
-        </div>
-      </div>
-
-      <div class="cert-card fade-up">
-        <div class="cert-icon green">🧠</div>
-        <div class="cert-body">
-          <h3>CS50's Intro to AI with Python</h3>
-          <div class="cert-issuer">Harvard University (Online)</div>
-          <div class="cert-date">Search · Knowledge · Neural Networks · Language Models</div>
-        </div>
-      </div>
-
-      <div class="cert-card fade-up">
-        <div class="cert-icon green">🤖</div>
-        <div class="cert-body">
-          <h3>Introduction to AI &amp; Applications</h3>
-          <div class="cert-issuer">Zewail City of Science and Technology</div>
-          <div class="cert-date">August 2023 · 50-hour blended learning program</div>
-        </div>
-      </div>
-
-      <div class="cert-card fade-up">
-        <div class="cert-icon gold">📋</div>
-        <div class="cert-body">
-          <h3>Project Management Course</h3>
-          <div class="cert-issuer">British University in Egypt / SCE</div>
-          <div class="cert-date">11–15 Aug 2024 · Farouk Elbaz Sustainability Research Centre</div>
-        </div>
-      </div>
-
-      <div class="cert-card fade-up">
-        <div class="cert-icon gold">💡</div>
-        <div class="cert-body">
-          <h3>Entrepreneurship</h3>
-          <div class="cert-issuer">Canadian International College (CIC) &amp; IGS &amp; Partners</div>
-          <div class="cert-date">Jan 2025 · Entrepreneurial thinking &amp; venture fundamentals</div>
-        </div>
-      </div>
-
+    <div class="certs">
+      <div class="cert reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg></div><div><h4>Meta AI Academy Program</h4><p>Meta × Career 180 · 20 hours · September 2026</p><button type="button" data-full="assets/meta-ai-academy-certificate.webp">View certificate</button></div></div>
+      <div class="cert reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg></div><div><h4>CS50's Introduction to AI with Python</h4><p>Harvard University (online) · 2024</p></div></div>
+      <div class="cert reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg></div><div><h4>React Frontend Web Developer</h4><p>Digital Egypt Pioneers Initiative (DEPI), Ministry of Communications &amp; IT · 8-month track · 2024</p></div></div>
+      <div class="cert reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg></div><div><h4>Introduction to AI &amp; Applications</h4><p>Zewail City of Science and Technology · 50-hour program · 2023</p></div></div>
+      <div class="cert reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg></div><div><h4>Business English Track</h4><p>DEPI &amp; Berlitz Egypt · 2024</p></div></div>
+      <div class="cert reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg></div><div><h4>Project Management · Entrepreneurship</h4><p>British University in Egypt (2024) · CIC with IGS &amp; Partners (2025)</p></div></div>
     </div>
-  </div>
-</section>
-
-<!-- EDUCATION -->
-<section id="education">
-  <div class="container">
-    <p class="section-label fade-up">// background</p>
-    <h2 class="fade-up">Education</h2>
-    <div class="section-divider fade-up"></div>
-
-    <div class="edu-card fade-up">
-      <div class="edu-icon">🎓</div>
-      <div class="edu-body">
+    <div class="edu reveal">
+      <div>
         <h3>B.Sc. in Computer Science</h3>
-        <div class="edu-school"><a href="https://www.cic-cairo.edu.eg/ar/%D8%A7%D9%84%D8%B5%D9%81%D8%AD%D8%A9-%D8%A7%D9%84%D8%B1%D8%A6%D9%8A%D8%B3%D9%8A%D8%A9-2/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;transition:opacity .2s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">Canadian International College (CIC), Cairo, Egypt ↗</a></div>
-        <div class="edu-date">Graduated: 2026</div>
-        <p style="margin-top:.75rem; font-size:.875rem; color: var(--muted);">
-          ICPC participant · Machine learning pipelines · Full-stack React applications · Competitive programming
-        </p>
+        <p>Canadian International College (CIC), New Cairo · Graduated 2026 · ICPC participant</p>
+        <div class="tags"><span class="tag">Data Structures &amp; Algorithms</span><span class="tag">OOP (Java)</span><span class="tag">Databases</span><span class="tag">Software Engineering</span><span class="tag">Mobile Programming</span><span class="tag">Information Security</span></div>
       </div>
+      <div class="muted">Arabic: native<br>English: fluent</div>
     </div>
-
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="container">
-    <p class="section-label fade-up">// let's connect</p>
-    <h2 class="fade-up">Get In Touch</h2>
-    <div class="section-divider fade-up"></div>
-
-    <div class="contact-grid">
-      <div class="contact-info fade-up">
-        <p>
-          I'm currently looking for full-time roles in <strong>AI / Machine Learning</strong> and
-          <strong>Software Engineering</strong>. Open to on-site, hybrid, and remote opportunities.
-          Whether you have a question, a project idea, or just want to say hi — my inbox is always open.
-        </p>
-        <div class="contact-links">
-          <a href="https://github.com/ahmed-reda-elnajjar" target="_blank" class="contact-link">
-            <div class="contact-link-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            </div>
-            github.com/ahmed-reda-elnajjar
-          </a>
-          <a href="https://linkedin.com/in/ahmedreda04" target="_blank" class="contact-link">
-            <div class="contact-link-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            </div>
-            linkedin.com/in/ahmedreda04
-          </a>
-          <a href="tel:+201099119352" class="contact-link">
-            <div class="contact-link-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            </div>
-            +20 10 9911 9352
-          </a>
-          <a href="mailto:ahmed.reda.alnajjar@gmail.com" class="contact-link" id="emailLink">
-            <div class="contact-link-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            ahmed.reda.alnajjar@gmail.com
-          </a>
-          <div class="contact-link" style="cursor:default;">
-            <div class="contact-link-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            Cairo, Egypt
-          </div>
-        </div>
+  <div class="wrap">
+    <div class="contact reveal">
+      <div>
+        <span class="eyebrow">Contact</span>
+        <h2>Let's work together</h2>
+        <p>I'm looking for AI instructor and trainer roles, AI automation work and full-stack development, in Cairo, Giza or remote. The fastest way to reach me is email or WhatsApp.</p>
+        <div class="cta"><a class="btn btn-primary" href="assets/cv/Ahmed_Reda_Alnajjar_CV_Full.pdf" download>Download CV</a></div>
       </div>
-
+      <div class="contact-list">
+        <a href="mailto:a7mdelnagar297@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span><small>Email</small>a7mdelnagar297@gmail.com</span></a>
+        <a href="https://wa.me/201099119352" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span><small>Phone &amp; WhatsApp</small>+20 10 9911 9352</span></a>
+        <a href="https://linkedin.com/in/ahmedreda04" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg><span><small>LinkedIn</small>linkedin.com/in/ahmedreda04</span></a>
+        <a href="https://github.com/ahmed-reda-elnajjar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.3-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></svg><span><small>GitHub</small>github.com/ahmed-reda-elnajjar</span></a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+</main>
+
 <footer>
-  <p>Built by <span>Ahmed Reda Mohamed</span> &copy; 2026 &nbsp;·&nbsp; Cairo, Egypt &nbsp;·&nbsp;
-    <a href="https://github.com/ahmed-reda-elnajjar" target="_blank" style="color: var(--accent); text-decoration:none;">GitHub</a> &nbsp;·&nbsp;
-    <a href="https://linkedin.com/in/ahmedreda04" target="_blank" style="color: var(--accent); text-decoration:none;">LinkedIn</a>
-  </p>
+  <div class="wrap"><span>© 2026 Ahmed Reda Alnajjar · Cairo, Egypt</span><a href="#top">Back to top ↑</a></div>
 </footer>
 
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image preview"><button type="button" id="lbClose" aria-label="Close preview">×</button><img id="lbImg" alt=""></div>
+
 <script>
-  // Scroll progress bar
-  window.addEventListener('scroll', () => {
-    const el = document.getElementById('progress');
-    const scrollTop = window.scrollY;
-    const docHeight = document.body.scrollHeight - window.innerHeight;
-    el.style.width = (scrollTop / docHeight * 100) + '%';
+(function(){
+  var nav=document.getElementById('nav');
+  addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>8)},{passive:true});
+  var btn=document.getElementById('menuBtn'),links=document.getElementById('navLinks');
+  btn.addEventListener('click',function(){var o=links.classList.toggle('open');btn.setAttribute('aria-expanded',o)});
+  links.addEventListener('click',function(e){if(e.target.tagName==='A'){links.classList.remove('open');btn.setAttribute('aria-expanded','false')}});
+  var lb=document.getElementById('lb'),lbImg=document.getElementById('lbImg');
+  function close(){lb.classList.remove('open');lbImg.removeAttribute('src')}
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-full]');
+    if(t){lbImg.src=t.getAttribute('data-full');lbImg.alt=(t.querySelector('img')||t).getAttribute('alt')||'';lb.classList.add('open');document.getElementById('lbClose').focus();return}
+    if(e.target===lb||e.target.id==='lbClose')close();
   });
-
-  // Intersection observer for fade-up animations
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // Mobile nav toggle
-  function toggleNav() {
-    document.getElementById('navLinks').classList.toggle('open');
-  }
-
-  // Close nav on link click
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-      document.getElementById('navLinks').classList.remove('open');
-    });
-  });
-
-
-  // Active nav link highlight on scroll
-  const sections = document.querySelectorAll('section[id]');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 100) current = s.id;
-    });
-    document.querySelectorAll('.nav-links a').forEach(a => {
-      a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--accent)' : '';
-    });
-  });
+  addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+  var els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(el){io.observe(el)});
+  } else els.forEach(function(el){el.classList.add('in')});
+})();
 </script>
 </body>
 </html>
