@@ -63,33 +63,36 @@ h2{font-size:clamp(28px,3.4vw,40px);font-weight:800;margin-top:12px}
 .btn-sm{height:38px;padding:0 16px;font-size:14px}
 
 /* hero */
-.hero{padding:72px 0 64px}
-.hero-grid{display:grid;grid-template-columns:1.25fr .85fr;gap:56px;align-items:center}
+.hero{position:relative;padding:0;overflow:hidden;isolation:isolate}
+.hero-photo{position:absolute;top:0;right:0;bottom:0;width:min(47vw,760px);z-index:-1;background:var(--surface)}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 14%}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.7) 10%,rgba(255,255,255,0) 34%),linear-gradient(0deg,#fff 0%,rgba(255,255,255,.7) 14%,rgba(255,255,255,0) 34%)}
+.hero .wrap{padding-top:88px;padding-bottom:64px}
+.hero-text{max-width:min(600px,52%)}
 .status{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 10px;border:1px solid var(--border);border-radius:999px;font-size:13px;font-weight:500;color:var(--text-2);background:#fff}
-.status i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(15,159,110,.14)}
-.hero h1{font-size:clamp(40px,5.6vw,64px);font-weight:800;margin-top:22px}
-.hero .role{font-size:clamp(20px,2.2vw,26px);font-weight:600;color:var(--accent);margin-top:12px;letter-spacing:-.01em}
-.hero p.summary{font-size:18px;color:var(--text-2);margin:20px 0 0;max-width:620px}
+.status i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(15,159,110,.14)}
+.status .sm,.summary.sm,.stat .sm{display:none}
+.hero h1{font-size:clamp(44px,6vw,80px);font-weight:800;margin-top:24px;line-height:1.02;letter-spacing:-.035em}
+.hero .role{font-size:clamp(20px,2.1vw,26px);font-weight:600;color:var(--accent);margin-top:16px;letter-spacing:-.01em}
+.hero p.summary{font-size:18px;color:var(--text-2);margin:20px 0 0;max-width:600px}
 .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
 .socials{display:flex;flex-wrap:wrap;gap:18px;margin-top:28px;font-size:14px;color:var(--muted)}
 .socials a{display:inline-flex;align-items:center;gap:6px}
 .socials a:hover{color:var(--text)}
 .socials svg{width:16px;height:16px}
-.portrait{position:relative;justify-self:end;width:100%;max-width:380px}
-.avatar{position:relative;aspect-ratio:4/5;border-radius:28px;overflow:hidden;background:linear-gradient(150deg,#eef4ff 0%,#f7f8fa 55%,#e9eefb 100%);border:1px solid var(--border);box-shadow:var(--shadow)}
-.avatar span{position:absolute;inset:0;display:grid;place-items:center;font-size:96px;font-weight:800;color:#c7d4f3;letter-spacing:-.04em}
-.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
-.float{position:absolute;z-index:2;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:10px 14px;font-size:13px;line-height:1.35}
-.float b{display:block;font-size:14px}
-.float.f1{left:-28px;bottom:56px}
-.float.f2{right:-18px;top:36px}
 
 /* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);border-radius:var(--radius);background:#fff;margin-top:64px}
+.stats{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);border-radius:var(--radius);background:#fff;margin-top:64px;box-shadow:var(--shadow)}
 .stat{padding:24px 28px;border-left:1px solid var(--border)}
 .stat:first-child{border-left:0}
 .stat b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em}
+.stat b span{font:inherit;color:inherit}
 .stat span{font-size:14px;color:var(--muted)}
+
+/* mobile action bar */
+.mbar{display:none}
+.btn-wa{background:#fff;border-color:var(--border-strong);color:var(--text)}
+.btn-wa svg{color:#25d366}
 
 /* experience */
 .bg-soft{background:var(--surface)}
@@ -214,6 +217,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}.course:hover,.proj:hover{transform:none}}
 
 /* responsive */
+@media (max-width:1100px){
+  .status .lg{display:none}
+  .status .sm{display:inline}
+}
 @media (max-width:1000px){
   .levels{grid-template-columns:repeat(2,1fr)}
   .minis{grid-template-columns:repeat(2,1fr)}
@@ -228,13 +235,25 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .nav-links a.nav-cv{display:block;color:var(--accent);font-weight:600}
   .menu-btn{display:block}
   .nav .btn{display:none}
-  .hero-grid{grid-template-columns:1fr;gap:40px}
-  .portrait{justify-self:start;max-width:220px;order:-1}
-  .float{display:none}
-  .hero h1{margin-top:18px}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .stat:nth-child(3){border-left:0}
-  .stat:nth-child(n+3){border-top:1px solid var(--border)}
+  .nav:not(.scrolled):not(:has(.nav-links.open)){background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .nav:not(.scrolled):not(:has(.nav-links.open)) .brand>span:last-child{color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.45)}
+  .nav:not(.scrolled):not(:has(.nav-links.open)) .menu-btn{background:rgba(255,255,255,.9);border-color:transparent}
+  .hero{margin-top:-68px}
+  .hero-photo{position:relative;top:auto;right:auto;bottom:auto;width:100%;height:min(125vw,74vh);height:min(125vw,74svh);z-index:0}
+  .hero-photo img{object-position:50% 12%}
+  .hero-photo::after{background:linear-gradient(180deg,rgba(11,18,32,.45) 0%,rgba(11,18,32,0) 20%,rgba(255,255,255,0) 52%,rgba(255,255,255,.92) 85%,#fff 100%)}
+  .hero .wrap{position:relative;z-index:1;margin-top:-92px;padding-top:0;padding-bottom:44px}
+  .hero-text{max-width:none}
+  .status{box-shadow:0 6px 16px -10px rgba(11,18,32,.4)}
+  .hero h1{font-size:clamp(36px,9.4vw,60px);margin-top:14px}
+  .hero .role{margin-top:10px}
+  .stats{margin-top:32px}
+  .stat{padding:18px 16px}
+  .stat b{font-size:24px}
+  .mbar{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--border);transform:translateY(110%);transition:transform .25s ease;box-shadow:0 -8px 24px rgba(16,24,40,.06)}
+  .mbar.show{transform:none}
+  .mbar .btn{justify-content:center;padding:0 12px}
+  footer{padding-bottom:110px}
   .job{grid-template-columns:1fr;gap:12px;padding:24px}
   .courses,.featured,.certs{grid-template-columns:1fr}
   .course.split{flex-direction:column}
@@ -250,11 +269,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   section{padding:56px 0;scroll-margin-top:60px}
   .sec-head{margin-bottom:32px}
   .lead{font-size:16px}
-  .hero h1{font-size:38px}
-  .hero p.summary{font-size:16px}
-  .status{font-size:12px;border-radius:14px}
-  .portrait{max-width:180px}
-  .avatar{border-radius:22px}
+  .hero{margin-top:-60px}
+  .hero .wrap{margin-top:-80px}
+  .hero h1{font-size:clamp(34px,10vw,40px)}
+  .hero .role{font-size:17px}
+  .hero p.summary{font-size:15px;margin-top:12px}
+  .status{font-size:12px}
+  .status .lg,.summary.lg,.stat .lg{display:none}
+  .status .sm{display:inline}
+  .summary.sm{display:block}
+  .stat .sm{display:block}
   .course-meta{flex-direction:column;gap:2px}
   .course-meta span::before{content:none}
   .course-body{padding:20px}
@@ -272,12 +296,18 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .contact-list a{padding:12px 14px;font-size:14.5px;word-break:break-word}
   .lb{padding:12px}
   .lb button{top:10px;right:10px}
-  .hero{padding:44px 0 40px}
-  .cta .btn{flex:1 1 auto;justify-content:center}
+  .cta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+  .cta .btn{justify-content:center;padding:0 12px}
+  .hide-sm{display:none!important}
+  .socials{gap:10px;margin-top:16px}
+  .socials a{width:42px;height:42px;border:1px solid var(--border);border-radius:50%;justify-content:center;color:var(--text)}
+  .socials .lbl{display:none}
   .levels,.minis,.skills{grid-template-columns:1fr}
   ol.sessions{columns:1}
-  .stat{padding:18px 20px}
-  .stat b{font-size:24px}
+  .stats{margin-top:26px}
+  .stat{padding:12px 4px;text-align:center}
+  .stat b{font-size:19px}
+  .stat span{font-size:11px;line-height:1.3;display:block}
   .edu{grid-template-columns:1fr;padding:24px}
   .slides{grid-auto-columns:78%}
   .contact{border-radius:20px;padding:32px 20px}
@@ -308,41 +338,35 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-photo">
+    <img src="assets/photo.webp" alt="Ahmed Reda Alnajjar" width="1003" height="1254" fetchpriority="high">
+  </div>
   <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <span class="status"><i></i>Open to AI instructor, automation and developer roles · Cairo, Giza or remote</span>
-        <h1>Ahmed Reda Alnajjar</h1>
-        <div class="role">AI Automation Instructor &amp; Full&#8209;Stack Developer</div>
-        <p class="summary">I teach AI and automation, and I build what I teach. At Zoomix I trained university professors and business owners to put AI to work with ChatGPT, Claude, Gemini, n8n, Make and Zapier, wrote the curricula other instructors taught from, and built the internal systems the team used every day. I also ship AI-powered web products with Next.js, React and LLM APIs.</p>
-        <div class="cta">
-          <a class="btn btn-primary" href="assets/cv/Ahmed_Reda_Alnajjar_CV_Full.pdf" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Download CV</a>
-          <a class="btn btn-ghost" href="#teaching">See my courses</a>
-          <a class="btn btn-ghost" href="#projects">View projects</a>
-        </div>
-        <div class="socials">
-          <a href="mailto:a7mdelnagar297@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>a7mdelnagar297@gmail.com</a>
-          <a href="https://linkedin.com/in/ahmedreda04" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg>LinkedIn</a>
-          <a href="https://github.com/ahmed-reda-elnajjar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.3-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></svg>GitHub</a>
-          <a href="tel:+201099119352"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg>+20 10 9911 9352</a>
-        </div>
+    <div class="hero-text">
+      <span class="status"><i></i><span class="lg">Open to AI instructor, automation and developer roles · Cairo, Giza or remote</span><span class="sm">Open to work · Cairo / Remote</span></span>
+      <h1>Ahmed Reda <br>Alnajjar</h1>
+      <div class="role">AI Automation Instructor &amp; Full&#8209;Stack Developer</div>
+      <p class="summary lg">I teach AI and automation, and I build what I teach. At Zoomix I trained university professors and business owners to put AI to work with ChatGPT, Claude, Gemini, n8n, Make and Zapier, wrote the curricula other instructors taught from, and built the internal systems the team used every day. I also ship AI-powered web products with Next.js, React and LLM APIs.</p>
+      <p class="summary sm">I teach AI &amp; automation and build what I teach: I trained professors and business owners at Zoomix, and I ship AI web apps with Next.js.</p>
+      <div class="cta" id="heroCta">
+        <a class="btn btn-primary" href="assets/cv/Ahmed_Reda_Alnajjar_CV_Full.pdf" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Download CV</a>
+        <a class="btn btn-ghost" href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/></svg>Contact me</a>
+        <a class="btn btn-ghost hide-sm" href="#teaching">See my courses</a>
       </div>
-      <div class="portrait">
-        <div class="avatar">
-          <span aria-hidden="true">AR</span>
-          <img src="assets/photo.webp" alt="Ahmed Reda Alnajjar" onerror="this.remove()">
+      <div class="socials">
+          <a aria-label="Email" href="mailto:a7mdelnagar297@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="lbl">a7mdelnagar297@gmail.com</span></a>
+          <a aria-label="LinkedIn" href="https://linkedin.com/in/ahmedreda04" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg><span class="lbl">LinkedIn</span></a>
+          <a aria-label="GitHub" href="https://github.com/ahmed-reda-elnajjar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.3-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></svg><span class="lbl">GitHub</span></a>
+          <a aria-label="Phone" href="tel:+201099119352"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg><span class="lbl">+20 10 9911 9352</span></a>
         </div>
-        <div class="float f1"><b>AI &amp; Automation</b><span class="muted">n8n · Make · Zapier · AI agents</span></div>
-        <div class="float f2"><b>Full-stack</b><span class="muted">Next.js · React · Node · Python</span></div>
-      </div>
     </div>
 
     <div class="stats reveal">
-      <div class="stat"><b>5</b><span>curricula written</span></div>
-      <div class="stat"><b>60+</b><span>sessions with labs &amp; projects</span></div>
-      <div class="stat"><b>13+</b><span>projects shipped</span></div>
-      <div class="stat"><b>Ages 6+</b><span>kids, teens, professors, business owners</span></div>
+      <div class="stat"><b>5</b><span class="lg">curricula written</span><span class="sm">curricula</span></div>
+      <div class="stat"><b>60+</b><span class="lg">sessions with labs &amp; projects</span><span class="sm">sessions</span></div>
+      <div class="stat"><b>13+</b><span class="lg">projects shipped</span><span class="sm">projects</span></div>
+      <div class="stat"><b><span class="lg">Ages </span>6+</b><span class="lg">kids, teens, professors, business owners</span><span class="sm">ages taught</span></div>
     </div>
   </div>
 </section>
@@ -706,6 +730,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <div class="wrap"><span>© 2026 Ahmed Reda Alnajjar · Cairo, Egypt</span><a href="#top">Back to top ↑</a></div>
 </footer>
 
+<div class="mbar" id="mbar" aria-hidden="true">
+  <a class="btn btn-primary" href="assets/cv/Ahmed_Reda_Alnajjar_CV_Full.pdf" download tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Download CV</a>
+  <a class="btn btn-wa" href="https://wa.me/201099119352" target="_blank" rel="noopener" tabindex="-1"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 4 3.5 1.5.6 2 .7 2.8.6.4-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.3Z"/></svg>WhatsApp</a>
+</div>
+
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image preview"><button type="button" id="lbClose" aria-label="Close preview">×</button><img id="lbImg" alt=""></div>
 
 <script>
@@ -723,6 +752,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     if(e.target===lb||e.target.id==='lbClose')close();
   });
   addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+  var bar=document.getElementById('mbar'),cta=document.getElementById('heroCta'),contact=document.getElementById('contact');
+  if(bar&&cta&&'IntersectionObserver' in window){
+    var pastCta=false,atContact=false;
+    function upd(){var on=pastCta&&!atContact;bar.classList.toggle('show',on);bar.setAttribute('aria-hidden',on?'false':'true');bar.querySelectorAll('a').forEach(function(a){a.tabIndex=on?0:-1})}
+    new IntersectionObserver(function(es){es.forEach(function(x){pastCta=!x.isIntersecting&&x.boundingClientRect.top<0;upd()})}).observe(cta);
+    if(contact)new IntersectionObserver(function(es){es.forEach(function(x){atContact=x.isIntersecting;upd()})},{rootMargin:'0px 0px -30% 0px'}).observe(contact);
+  }
   var els=document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px'});
